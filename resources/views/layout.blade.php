@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Fruitables - Vegetable Website Template</title>
+    <title>Sayur.id - Fresh & Organic Groceries</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="Sayur.id, Organic, Vegetables, Fruits, Groceries, Online Store" name="keywords">
+    <meta content="Sayur.id offers fresh and organic vegetables and fruits delivered to your doorstep." name="description">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,61 +19,155 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="{{ asset('lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <!-- Tailwind CSS (assuming it's compiled via Laravel Mix/Vite) -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-gray-100 dark:bg-gray-900 font-sans antialiased">
     <!-- Navbar start -->
-    <div class="container-fluid fixed-top">
-        <div class="container px-0">
-            <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                <a href="{{ route('home') }}" class="navbar-brand">
-                    <h1 class="text-primary display-6">Fruitables</h1>
-                </a>
-                <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars text-primary"></span>
-                </button>
-                <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto">
-                        <a href="{{ route('home') }}" class="nav-item nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
-                        <a href="{{ route('product') }}" class="nav-item nav-link {{ request()->routeIs('product') ? 'active' : '' }}">Produk</a>
-                        <a href="{{ url('/kontak') }}" class="nav-item nav-link {{ request()->is('kontak') ? 'active' : '' }}">Kontak Kami</a>
+    <nav class="bg-white dark:bg-gray-800 shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="{{ route('home') }}" class="flex items-center">
+                <h1 class="text-green-600 text-3xl font-extrabold">Sayur.id</h1>
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="{{ route('home') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Home</a>
+                <a href="{{ route('product') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Produk</a>
+                <a href="{{ route('contact') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Kontak Kami</a>
+
+                @auth
+                    <a href="{{ route('orders.index') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">
+                        <i class="fas fa-shopping-cart"></i> Keranjang
+                    </a>
+                    <div class="relative group">
+                        <button class="flex items-center text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium focus:outline-none">
+                            <i class="fas fa-user mr-2"></i> {{ Auth::user()->name }}
+                            <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg py-1 hidden group-hover:block">
+                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Profile</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Logout</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            </nav>
+                @else
+                    <a href="{{ route('login') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Login</a>
+                    <a href="{{ route('register') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Register</a>
+                @endauth
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-700 dark:text-gray-200 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
-    </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white dark:bg-gray-800 py-2">
+            <a href="{{ route('home') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+            <a href="{{ route('product') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Produk</a>
+            <a href="{{ route('contact') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Kontak Kami</a>
+            @auth
+                <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Keranjang</a>
+                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Login</a>
+                <a href="{{ route('register') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Register</a>
+            @endauth
+        </div>
+    </nav>
     <!-- Navbar End -->
 
-    @yield('content')
+    <!-- Main Content Area -->
+    <main class="pt-20"> <!-- Adjust pt-x based on navbar height -->
+        @yield('content')
+    </main>
 
-
+    <!-- Footer Start -->
+    <footer class="bg-gray-800 text-gray-300 py-10 mt-10">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">Sayur.id</h3>
+                <p class="text-sm">Fresh & Organic Groceries delivered to your doorstep.</p>
+                <div class="flex space-x-4 mt-4">
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="{{ route('home') }}" class="hover:text-white">Home</a></li>
+                    <li><a href="{{ route('product') }}" class="hover:text-white">Produk</a></li>
+                    <li><a href="{{ route('contact') }}" class="hover:text-white">Kontak Kami</a></li>
+                    @auth
+                        <li><a href="{{ route('orders.index') }}" class="hover:text-white">Pesanan Saya</a></li>
+                        <li><a href="{{ route('profile.edit') }}" class="hover:text-white">Profil</a></li>
+                    @endauth
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">Contact Us</h3>
+                <p class="text-sm mb-2"><i class="fa fa-map-marker-alt mr-2"></i> 123 Street, New York, USA</p>
+                <p class="text-sm mb-2"><i class="fa fa-phone-alt mr-2"></i> +012 345 67890</p>
+                <p class="text-sm mb-2"><i class="fa fa-envelope mr-2"></i> info@example.com</p>
+            </div>
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">Newsletter</h3>
+                <p class="text-sm mb-4">Subscribe to our newsletter for the latest updates.</p>
+                <form class="flex">
+                    <input type="email" placeholder="Your Email" class="px-4 py-2 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary-500 flex-grow dark:bg-gray-700 dark:text-gray-100">
+                    <button type="submit" class="bg-primary-600 text-white px-4 py-2 rounded-r-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="text-center text-gray-500 text-sm mt-8 pt-8 border-t border-gray-700">
+            &copy; <a class="text-primary-500 hover:underline" href="#">Sayur.id</a>, All Right Reserved.
+        </div>
+    </footer>
+    <!-- Footer End -->
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
-            class="fa fa-arrow-up"></i></a>
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary-600 text-white p-3 rounded-full shadow-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 hidden">
+        <i class="fa fa-arrow-up"></i>
+    </button>
 
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
 
-    <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('lib/lightbox/js/lightbox.min.js') }}"></script>
-    <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+            }
+        });
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 
-    <!-- Template Javascript -->
-    <script src="{{ asset('js/main.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>

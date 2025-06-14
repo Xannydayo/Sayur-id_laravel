@@ -14,8 +14,8 @@ class ProductController extends Controller
     {
         $categories = Category::with('products')->get();
         $products = Product::with('category')->get();
-        $promotion = Promotion::where('key', 'home')->get()[0];
-        return view('product', compact('categories', 'products'));
+        $promotion = Promotion::where('key', 'home')->first();
+        return view('product', compact('categories', 'products', 'promotion'));
     }
 
     public function show($slug)
@@ -28,9 +28,9 @@ class ProductController extends Controller
     public function category(Category $category)
     {
         $sub_categories = Category::with('products')->get();
-        $promotion = Promotion::where('key', 'home')->get()[0];
+        $promotion = Promotion::where('key', 'home')->first();
         
-        return view('product-category', compact('category','sub_categories'));
+        return view('product-category', compact('category', 'sub_categories', 'promotion'));
     }
 
 }

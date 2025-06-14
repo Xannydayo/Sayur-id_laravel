@@ -37,4 +37,10 @@ return [
         // 'account_type' => env('RAJAONGKIR_ACCOUNT_TYPE', 'starter'), // Optional
     ],
 
+    'google' => [
+        'client_id' => '300653143937-hmu6duegbm4ii6bl93sl68i9951jft4k.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect' => 'http://127.0.0.1:8000/auth/google/callback',
+    ],
+
 ];

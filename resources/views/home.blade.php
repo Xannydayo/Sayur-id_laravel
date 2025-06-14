@@ -1,122 +1,99 @@
 @extends('layout')
 
 @section('content')
-<!-- Hero Start -->
-<div class="container-fluid py-5 mb-5 mt-5">
-    <div class="container py-5">
-        <div class="row g-5 align-items-center">
-            <div class="col-md-12 col-lg-7">
-                <h4 class="mb-3 text-secondary">100% Organic Foods</h4>
-                <h1 class="mb-5 display-3 text-primary">Organic Veggies & Fruits Foods</h1>
-            </div>
-            <div class="col-md-12 col-lg-5">
-                <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-                    <div class="carousel-inner" role="listbox">
-                        @foreach ($categories as $category)
-                        <div class="carousel-item active @if($loop->iteration == 1) active @endif rounded">
-                            <img src="{{ asset('storage/' . $category->gambar) }}" class="img-fluid w-100px h-100px bg-secondary rounded"
-                                alt="First slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">{{ $category->judul }}</a>
-                        </div>
-                        @endforeach
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselId"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselId"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
+<!-- Hero Section Start -->
+<div class="relative w-full h-screen bg-cover bg-center flex items-center justify-center text-white p-4" style="background-image: url('{{ asset('img/hero-background.jpg') }}');">
+    <div class="absolute inset-0 bg-black opacity-60"></div> <!-- Overlay for better text readability -->
+    <div class="relative z-10 text-center max-w-4xl mx-auto">
+        <h4 class="text-xl md:text-2xl font-semibold text-green-400 mb-4 tracking-wide uppercase">Sayur.id - Kualitas Terbaik dari Petani Lokal</h4>
+        <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6 animate-fade-in-up">Sayuran & Buah Segar Organik Langsung ke Pintu Anda</h1>
+        <p class="text-lg md:text-xl mb-10 opacity-90 animate-fade-in-up delay-200">Dapatkan produk-produk pilihan yang dipanen dengan cinta, untuk hidup yang lebih sehat dan bahagia.</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="{{ route('product') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                Lihat Produk <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+            <a href="{{ route('contact') }}" class="bg-transparent border-2 border-white hover:border-green-400 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                Hubungi Kami <i class="fas fa-phone-alt ml-2"></i>
+            </a>
         </div>
     </div>
 </div>
-<!-- Hero End -->
+<!-- Hero Section End -->
 
+<!-- Categories Section Start - Updated Design -->
+<div class="container mx-auto px-4 py-16">
+    <div class="text-center mx-auto mb-12 max-w-2xl">
+        <h2 class="text-4xl font-extrabold text-gray-800 dark:text-gray-100 mb-4">Jelajahi Kategori Pilihan</h2>
+        <p class="text-gray-600 dark:text-gray-300 text-lg">Temukan beragam produk segar berdasarkan kategori favorit Anda.</p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        @foreach ($categories as $category)
+        <a href="{{ route('product.category',$category->slug) }}" class="block bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group">
+            <div class="relative overflow-hidden">
+                <img src="{{ asset('storage/' . $category->gambar) }}" class="w-full h-40 object-cover object-center group-hover:scale-110 transition-transform duration-500" alt="{{ $category->judul }}">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+                <h5 class="absolute bottom-4 left-4 text-xl font-bold text-white group-hover:text-green-300 transition-colors duration-300">{{ $category->judul }}</h5>
+            </div>
+        </a>
+        @endforeach
+    </div>
+</div>
+<!-- Categories Section End -->
 
 <!-- Featurs Section Start -->
-<div class="container-fluid featurs py-5">
-    <div class="container py-5">
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="featurs-item text-center rounded bg-light p-4">
-                    <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                        <i class="fas fa-car-side fa-3x text-white"></i>
-                    </div>
-                    <div class="featurs-content text-center">
-                        <h5>Free Shipping</h5>
-                        <p class="mb-0">Free on order over $300</p>
-                    </div>
-                </div>
+<div class="container mx-auto px-4 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center transform transition-transform duration-300 hover:scale-105">
+            <div class="bg-green-100 dark:bg-green-700 text-green-600 dark:text-green-200 p-4 rounded-full inline-flex mb-4">
+                <i class="fas fa-truck fa-2x"></i>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="featurs-item text-center rounded bg-light p-4">
-                    <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                        <i class="fas fa-user-shield fa-3x text-white"></i>
-                    </div>
-                    <div class="featurs-content text-center">
-                        <h5>Security Payment</h5>
-                        <p class="mb-0">100% security payment</p>
-                    </div>
-                </div>
+            <h5 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Gratis Ongkir</h5>
+            <p class="text-gray-600 dark:text-gray-300">Untuk pesanan di atas Rp 300.000</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center transform transition-transform duration-300 hover:scale-105">
+            <div class="bg-blue-100 dark:bg-blue-700 text-blue-600 dark:text-blue-200 p-4 rounded-full inline-flex mb-4">
+                <i class="fas fa-shield-alt fa-2x"></i>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="featurs-item text-center rounded bg-light p-4">
-                    <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                        <i class="fas fa-exchange-alt fa-3x text-white"></i>
-                    </div>
-                    <div class="featurs-content text-center">
-                        <h5>30 Day Return</h5>
-                        <p class="mb-0">30 day money guarantee</p>
-                    </div>
-                </div>
+            <h5 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Pembayaran Aman</h5>
+            <p class="text-gray-600 dark:text-gray-300">Pembayaran 100% aman dan terenkripsi</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center transform transition-transform duration-300 hover:scale-105">
+            <div class="bg-purple-100 dark:bg-purple-700 text-purple-600 dark:text-purple-200 p-4 rounded-full inline-flex mb-4">
+                <i class="fas fa-exchange-alt fa-2x"></i>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="featurs-item text-center rounded bg-light p-4">
-                    <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                        <i class="fa fa-phone-alt fa-3x text-white"></i>
-                    </div>
-                    <div class="featurs-content text-center">
-                        <h5>24/7 Support</h5>
-                        <p class="mb-0">Support every time fast</p>
-                    </div>
-                </div>
+            <h5 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Garansi 30 Hari</h5>
+            <p class="text-gray-600 dark:text-gray-300">Garansi uang kembali 30 hari</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center transform transition-transform duration-300 hover:scale-105">
+            <div class="bg-red-100 dark:bg-red-700 text-red-600 dark:text-red-200 p-4 rounded-full inline-flex mb-4">
+                <i class="fas fa-headset fa-2x"></i>
             </div>
+            <h5 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Dukungan 24/7</h5>
+            <p class="text-gray-600 dark:text-gray-300">Dukungan pelanggan responsif setiap saat</p>
         </div>
     </div>
 </div>
 <!-- Featurs Section End -->
 
 <!-- Banner Section Start-->
-<div class="container-fluid banner bg-secondary my-5">
-    <div class="container py-5">
-        <div class="row g-4 align-items-center">
-            <div class="col-lg-6">
-                <div class="py-4">
-                    <h1 class="display-3 text-white">Promo Terbaik Bulan Ini</h1>
-                    <p class="mb-4 text-dark">Dapatkan berbagai macam produk berkualitas dengan harga terjangkau.
-                    </p>
-                    <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">Beli
-                        Sekarang</a>
+<div class="bg-green-600 dark:bg-green-800 py-16 my-10 rounded-lg mx-4 md:mx-auto max-w-6xl shadow-xl">
+    <div class="container mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div class="w-full lg:w-1/2 text-center lg:text-left">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Promo Terbaik Bulan Ini</h1>
+            <p class="text-white text-lg mb-6 opacity-90">Dapatkan berbagai macam produk berkualitas dengan harga terjangkau.</p>
+            <a href="{{ route('product') }}" class="inline-block bg-white text-green-700 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-300">
+                Beli Sekarang <i class="fas fa-shopping-cart ml-2"></i>
+            </a>
+        </div>
+        <div class="w-full lg:w-1/2 flex justify-center lg:justify-end relative">
+            @if ($promotion)
+                <img src="{{ Storage::url($promotion->gambar) }}" class="w-full md:w-3/4 lg:w-full max-w-md rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-500" alt="Promotion Image">
+                
+            @else
+                <div class="bg-gray-200 dark:bg-gray-700 w-full md:w-3/4 lg:w-full max-w-md h-64 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400">
+                    No promotion image available.
                 </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="position-relative">
-                    <img src="{{ Storage::url($promotion->gambar) }}" class="img-fluid w-100 rounded" alt="">
-                    <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute"
-                        style="width: 140px; height: 140px; top: 0; left: 0;">
-                        <h1 style="font-size: 100px;">1</h1>
-                        <div class="d-flex flex-column">
-                            <span class="h2 mb-0">50$</span>
-                            <span class="h4 text-muted mb-0">kg</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endif
         </div>
     </div>
 </div>
@@ -124,167 +101,77 @@
 
 
 <!-- Bestsaler Product Start -->
-<div class="container-fluid py-5">
-    <div class="container py-5">
-        <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-            <h1 class="display-4">Produk Kami</h1>
-            <p>Nikmati kesegaran dan kualitas terbaik.</p>
-        </div>
-        <div class="row g-4">
-            @foreach($products as $product)
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="text-center">
-                    <img src="{{ asset('storage/' . $product->gambar) }}" class="img-fluid rounded" style="width: 450px; height: 250px; object-fit: cover;" alt="">
-                    <div class="py-4">
-                        <a href="{{ route('product.show', $product->slug) }}" class="h5">{{ $product->nama }}</a>
-                        <h4 class="mb-3 mt-2">{{ number_format($product->harga,0, ',' ,'.'), }} / kg</h4>
-                        <a href="{{ route('product.show', $product->slug) }}"
-                            class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                class="fa fa-eye me-2 text-primary"></i> Detail</a>
-                    </div>
-                </div>
+<div class="container mx-auto px-4 py-16">
+    <div class="text-center mx-auto mb-12" style="max-width: 700px;">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-gray-100 mb-4">Produk Kami</h1>
+        <p class="text-gray-600 dark:text-gray-300 text-lg">Nikmati kesegaran dan kualitas terbaik dari pilihan produk organik kami.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        @foreach($products as $product)
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105">
+            <img src="{{ asset('storage/' . $product->gambar) }}" class="w-full h-48 object-cover" alt="{{ $product->nama }}">
+            <div class="p-6">
+                <a href="{{ route('product.show', $product->slug) }}" class="block text-xl font-semibold text-gray-800 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 mb-2">{{ $product->nama }}</a>
+                <h4 class="text-2xl font-bold text-green-700 dark:text-green-400 mb-3">Rp {{ number_format($product->harga, 0, ',', '.') }} / kg</h4>
+                <a href="{{ route('product.show', $product->slug) }}"
+                    class="inline-flex items-center bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-green-700 transition duration-300">
+                    <i class="fa fa-eye mr-2"></i> Detail
+                </a>
             </div>
-            @endforeach
         </div>
-        <div class="row g-4">
-            @foreach($products as $product)
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="text-center">
-                    <img src="{{ asset('storage/' . $product->gambar) }}" class="img-fluid rounded" style="width: 450px; height: 250px; object-fit: cover;" alt="">
-                    <div class="py-4">
-                        <a href="{{ route('product.show', $product->slug) }}" class="h5">{{ $product->nama }}</a>
-                        <h4 class="mb-3 mt-2">{{ number_format($product->harga,0, ',' ,'.'), }} / kg</h4>
-                        <a href="{{ route('product.show', $product->slug) }}"
-                            class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                class="fa fa-eye me-2 text-primary"></i> Detail</a>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
+        @endforeach
     </div>
 </div>
 <!-- Bestsaler Product End -->
 
-<!-- Tastimonial Start -->
-<div class="container-fluid testimonial py-5">
-    <div class="container py-5">
-        <div class="testimonial-header text-center">
-            <h4 class="text-primary">Testimonial</h4>
-            <h1 class="display-5 mb-5 text-dark">Apa Yang Klien Kami Katakan</h1>
+<!-- Testimonial Start -->
+<div class="bg-gray-50 dark:bg-gray-900 py-16">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h4 class="text-green-600 text-lg font-semibold mb-2">Testimonial</h4>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-gray-100">Apa Yang Klien Kami Katakan</h1>
         </div>
-        <div class="owl-carousel testimonial-carousel">
-            <div class="testimonial-item img-border-radius bg-light rounded p-4">
-                <div class="position-relative">
-                    <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
-                        style="bottom: 30px; right: 0;"></i>
-                    <div class="mb-4 pb-4 border-bottom border-secondary">
-                        <p class="mb-0">
-                            Produknya segar serta pengantaran sangat cepat sekali
-                        </p>
-                    </div>
-                    <div class="d-flex align-items-center flex-nowrap">
-                        <div class="bg-secondary rounded">
-                            <img src="{{ asset('img/testimonial-1.jpg') }}" class="img-fluid rounded"
-                                style="width: 100px; height: 100px;" alt="">
-                        </div>
-                        <div class="ms-4 d-block">
-                            <h4 class="text-dark">Sumarti</h4>
-                            <p class="m-0 pb-3">Ibu Rumah Tangga</p>
-                        </div>
+        <!-- This section usually requires a JS carousel library. For simplicity, I'll show static items. If you have an Owl Carousel equivalent in JS (e.g., swiper.js or custom), it needs to be integrated. -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 relative">
+                <i class="fas fa-quote-right fa-2x text-gray-200 dark:text-gray-700 absolute top-6 right-6"></i>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">Produknya segar serta pengantaran sangat cepat sekali</p>
+                <div class="flex items-center">
+                    <img src="{{ asset('img/123.jpg') }}" class="w-16 h-16 rounded-full object-cover mr-4 shadow-md" alt="Client 1">
+                    <div>
+                        <h5 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Sumarti</h5>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Ibu Rumah Tangga</p>
                     </div>
                 </div>
             </div>
-            <div class="testimonial-item img-border-radius bg-light rounded p-4">
-                <div class="position-relative">
-                    <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
-                        style="bottom: 30px; right: 0;"></i>
-                    <div class="mb-4 pb-4 border-bottom border-secondary">
-                        <p class="mb-0">
-                            Produknya segar serta pengantaran sangat cepat sekali
-                        </p>
-                    </div>
-                    <div class="d-flex align-items-center flex-nowrap">
-                        <div class="bg-secondary rounded">
-                            <img src="{{ asset('img/testimonial-1.jpg') }}" class="img-fluid rounded"
-                                style="width: 100px; height: 100px;" alt="">
-                        </div>
-                        <div class="ms-4 d-block">
-                            <h4 class="text-dark">Sumarti</h4>
-                            <p class="m-0 pb-3">Ibu Rumah Tangga</p>
-                        </div>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 relative">
+                <i class="fas fa-quote-right fa-2x text-gray-200 dark:text-gray-700 absolute top-6 right-6"></i>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">Produknya segar serta pengantaran sangat cepat sekali</p>
+                <div class="flex items-center">
+                    <img src="{{ asset('img/234.jpg') }}" class="w-16 h-16 rounded-full object-cover mr-4 shadow-md" alt="Client 2">
+                    <div>
+                        <h5 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Budi Santoso</h5>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Pengusaha</p>
                     </div>
                 </div>
             </div>
-            <div class="testimonial-item img-border-radius bg-light rounded p-4">
-                <div class="position-relative">
-                    <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
-                        style="bottom: 30px; right: 0;"></i>
-                    <div class="mb-4 pb-4 border-bottom border-secondary">
-                        <p class="mb-0">
-                            Produknya segar serta pengantaran sangat cepat sekali
-                        </p>
-                    </div>
-                    <div class="d-flex align-items-center flex-nowrap">
-                        <div class="bg-secondary rounded">
-                            <img src="{{ asset('img/testimonial-1.jpg') }}" class="img-fluid rounded"
-                                style="width: 100px; height: 100px;" alt="">
-                        </div>
-                        <div class="ms-4 d-block">
-                            <h4 class="text-dark">Sumarti</h4>
-                            <p class="m-0 pb-3">Ibu Rumah Tangga</p>
-                        </div>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 relative">
+                <i class="fas fa-quote-right fa-2x text-gray-200 dark:text-gray-700 absolute top-6 right-6"></i>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">Produknya segar serta pengantaran sangat cepat sekali</p>
+                <div class="flex items-center">
+                    <img src="{{ asset('img/345.jpg') }}" class="w-16 h-16 rounded-full object-cover mr-4 shadow-md" alt="Client 3">
+                    <div>
+                        <h5 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Siti Aminah</h5>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Chef Rumahan</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Tastimonial End -->
+<!-- Testimonial End -->
 
 
-<!-- Footer Start -->
-<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
-    <div class="container py-5">
-        <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
-            <div class="row g-4">
-                <div class="col-lg-3">
-                    <a href="#">
-                        <h1 class="text-primary mb-0">Fruitables</h1>
-                        <p class="text-secondary mb-0">Fresh products</p>
-                    </a>
-                </div>
-                <div class="col-lg-9">
-                    <div class="d-flex justify-content-end pt-3">
-                        <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
-                                class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
-                                class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i
-                                class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Footer End -->
-
-<!-- Copyright Start -->
-<div class="container-fluid copyright bg-dark py-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-center text-center mx-auto mb-3 mb-md-0">
-                <span class="text-light text-center mx-auto"><a href="#"><i
-                            class="fas fa-copyright text-light text-center mx-auto me-2"></i>Your Site
-                        Name</a>, All right reserved.</span>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Copyright End -->
 
 
 @endsection

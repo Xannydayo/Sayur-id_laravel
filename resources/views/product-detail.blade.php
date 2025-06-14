@@ -2,139 +2,85 @@
 
 @section('content')
 
-    <!-- Single Page Header start -->
-    <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Shop Detail</h1>
-        <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('product') }}">Produk</a></li>
-            <li class="breadcrumb-item active text-white">{{ $product->nama }}</li>
-        </ol>
+<!-- Single Page Header Start -->
+<div class="bg-gradient-to-r from-green-500 to-green-700 py-16 text-white text-center shadow-lg">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-3">Detail Produk</h1>
+        <nav class="text-sm font-medium" aria-label="breadcrumb">
+            <ol class="flex justify-center items-center space-x-2">
+                <li><a href="{{ route('home') }}" class="hover:underline">Home</a></li>
+                <li class="flex items-center">
+                    <svg class="w-4 h-4 mx-2" fill="currentColor" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <a href="{{ route('product') }}" class="hover:underline">Produk</a>
+                </li>
+                <li class="flex items-center">
+                    <svg class="w-4 h-4 mx-2" fill="currentColor" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <span class="text-gray-200">{{ $product->nama }}</span>
+                </li>
+            </ol>
+        </nav>
     </div>
-    <!-- Single Page Header End -->
+</div>
+<!-- Single Page Header End -->
 
 
-    <!-- Single Product Start -->
-    <div class="container-fluid py-5 mt-5">
-        <div class="container py-5">
-            <div class="row mb-5">
-                <div class="col-lg-12 col-xl-12">
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <div class="border rounded">
-                                <a href="#">
-                                    <img src="{{ asset('storage/' . $product->gambar) }}" class="img-fluid rounded" alt="Image">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-lg-7">
-                            <h4 class="fw-bold mb-3">{{ $product->nama }}</h4>
-                            <p class="mb-3">Kategori: {{ $product->category ? $product->category->judul : 'Tidak ada kategori' }}</p>
-                            <h5 class="fw-bold mb-3">Rp.{{ $product->harga }} / Kg</h5>
-                            {!! $product->deskripsi_singkat !!}
-                            <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Beli Sekarang</a>
-                        </div>
-                        <div class="col-lg-12 mt-5">
-                            <nav>
-                                <div class="nav nav-tabs mb-3">
-                                    <button class="nav-link active border-white border-bottom-0" type="button"
-                                        role="tab" id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
-                                        aria-controls="nav-about" aria-selected="true">Deskripsi</button>
-                                </div>
-                            </nav>
-                            <div class="tab-content mb-5">
-                                <div class="tab-pane active" id="nav-about" role="tabpanel"
-                                    aria-labelledby="nav-about-tab">
-                                    {!! $product->deskripsi_panjang !!}
-                                </div>
-                                <div class="tab-pane" id="nav-mission" role="tabpanel"
-                                    aria-labelledby="nav-mission-tab">
-                                    <div class="d-flex">
-                                        <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3"
-                                            style="width: 100px; height: 100px;" alt="">
-                                        <div class="">
-                                            <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                            <div class="d-flex justify-content-between">
-                                                <h5>Jason Smith</h5>
-                                                <div class="d-flex mb-3">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                            </div>
-                                            <p>The generated Lorem Ipsum is therefore always free from repetition
-                                                injected humour, or non-characteristic
-                                                words etc. Susp endisse ultricies nisi vel quam suscipit </p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex">
-                                        <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3"
-                                            style="width: 100px; height: 100px;" alt="">
-                                        <div class="">
-                                            <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                            <div class="d-flex justify-content-between">
-                                                <h5>Sam Peters</h5>
-                                                <div class="d-flex mb-3">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                            </div>
-                                            <p class="text-dark">The generated Lorem Ipsum is therefore always free from
-                                                repetition injected humour, or non-characteristic
-                                                words etc. Susp endisse ultricies nisi vel quam suscipit </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="nav-vision" role="tabpanel">
-                                    <p class="text-dark">Tempor erat elitr rebum at clita. Diam dolor diam ipsum et
-                                        tempor sit. Aliqu diam
-                                        amet diam et eos labore. 3</p>
-                                    <p class="mb-0">Diam dolor diam ipsum et tempor sit. Aliqu diam amet diam et eos
-                                        labore.
-                                        Clita erat ipsum et lorem et sit</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- Single Product Start -->
+<div class="container mx-auto px-4 py-16">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-12">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <div class="lg:w-1/2 flex justify-center items-center">
+                <img src="{{ asset('storage/' . $product->gambar) }}" class="w-full max-w-md h-auto object-cover rounded-lg shadow-xl" alt="{{ $product->nama }}">
             </div>
-            <h1 class="fw-bold mb-0">Produk Lainnya</h1>
-            <br>
-            <div class="row">
-                @foreach ($similar_products->take(4) as $similar_product)
-                    <div class="col-6 col-md-6 mb-4">
-                        <div class="border border-primary rounded position-relative vesitable-item h-100">
-                            <div class="vesitable-img text-center py-2">
-                                <img src="{{ asset('storage/' . $similar_product->gambar) }} " 
-                                     class="img-fluid rounded-top"
-                                     style="width: 450px; height: 250px; object-fit: cover;" alt="">
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                style="top: 10px; right: 10px; font-size: 0.8rem;">
-                                {{ $similar_product->category->judul }}
-                            </div>
-                            <div class="p-2 pb-0 rounded-bottom">
-                                <h6 style="font-weight: bold;">{{ $similar_product->nama }}</h6>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-6 fw-bold mb-0">Rp{{ number_format($similar_product->harga, 0, ',', '.')  }} / kg</p>
-                                    <a href="{{ route('product.show', $similar_product->slug) }}"
-                                        class="btn border border-secondary rounded-pill px-2 py-1 mb-2 text-primary" style="font-size: 0.8rem;">
-                                        <i class="fa fa-eye me-2 text-primary"></i> Detail
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+            <div class="lg:w-1/2">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-4">{{ $product->nama }}</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 mb-3">Kategori: <span class="font-semibold">{{ $product->category ? $product->category->judul : 'Tidak ada kategori' }}</span></p>
+                <p class="text-4xl font-bold text-green-700 dark:text-green-400 mb-6">Rp {{ number_format($product->harga, 0, ',', '.') }} / Kg</p>
+                <div class="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+                    {!! $product->deskripsi_singkat !!}
+                </div>
+                @auth
+                    <a href="{{ route('orders.create', ['product_id' => $product->id]) }}" class="inline-flex items-center bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-green-700 transition duration-300 text-lg">
+                        <i class="fa fa-shopping-bag mr-3"></i> Beli Sekarang
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="inline-flex items-center bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 text-lg">
+                        <i class="fa fa-user mr-3"></i> Login untuk Membeli
+                    </a>
+                @endauth
             </div>
         </div>
     </div>
-    <!-- Single Product End -->
+
+    <!-- Product Description Start -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-12">
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Deskripsi Produk</h3>
+        <div class="text-gray-700 dark:text-gray-300 leading-relaxed">
+            {!! $product->deskripsi_panjang !!}
+        </div>
+    </div>
+    <!-- Product Description End -->
+
+    <!-- Related Products Start -->
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-8 text-center">Produk Lainnya</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            @foreach ($similar_products->take(4) as $similar_product)
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                    <div class="relative">
+                        <img src="{{ asset('storage/' . $similar_product->gambar) }}" class="w-full h-48 object-cover rounded-t-lg" alt="{{ $similar_product->nama }}">
+                        <span class="absolute top-3 left-3 bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-full">{{ $similar_product->category->judul }}</span>
+                    </div>
+                    <div class="p-5 flex flex-col items-center text-center">
+                        <h5 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">{{ $similar_product->nama }}</h5>
+                        <p class="text-green-700 dark:text-green-400 text-2xl font-bold mb-4">Rp {{ number_format($similar_product->harga, 0, ',', '.') }} / kg</p>
+                        <a href="{{ route('product.show', $similar_product->slug) }}" class="inline-flex items-center bg-green-600 text-white font-bold py-2 px-5 rounded-full shadow-md hover:bg-green-700 transition duration-300">
+                            <i class="fa fa-eye mr-2"></i> Detail
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    <!-- Related Products End -->
 
 @endsection

@@ -2,35 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\Payment;
 use Illuminate\Http\Request;
-use Midtrans\Config;
-use Midtrans\Snap;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class PaymentController extends Controller
 {
-    public function __construct()
+    public function create(Order $order)
     {
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = config('midtrans.is_sanitized');
-        Config::$is3ds = config('midtrans.is_3ds');
+        return view('payments.create', compact('order'));
     }
 
-    public function createCharge(Request $request)
+    public function store(Request $request)
     {
-        $params = [
-            'transaction_details' => [
-                'order_id' => rand(),
-                'gross_amount' => $request->amount,
-            ],
-            'customer_details' => [
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-            ],
-        ];
+        $validated = $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'payment_method' => 'required|string',
+            'amount' => 'required|numeric|min:0',
+            'payment_details' => 'nullable|string',
+        ]);
 
-        $snapToken = Snap::getSnapToken($params);
-        return response()->json($snapToken);
+        $order = Order::findOrFail($validated['order_id']);
+
+        $payment = Payment::create([
+            'order_id' => $order->id,
+            'payment_method' => $validated['payment_method'],
+            'amount' => $validated['amount'],
+            'transaction_id' => null, // Tidak ada transaction ID dari gateway
+            'status' => 'paid', // Langsung set paid untuk pembayaran manual
+            'payment_details' => $validated['payment_details'],
+        ]);
+
+        $order->update(['status' => 'processing']); // Perbarui status order menjadi processing setelah pembayaran
+
+        return redirect()->route('payments.show', $payment)
+            ->with('success', 'Pembayaran berhasil diproses secara manual.');
+    }
+
+    public function show(Payment $payment)
+    {
+        // Load order and its products/user relationship for the receipt
+        $payment->load('order.products', 'order.user');
+        return view('payments.show', compact('payment'));
+    }
+
+    public function generateReceiptPdf(Payment $payment)
+    {
+        // Load order and its products/user relationship for the receipt
+        $payment->load('order.products', 'order.user');
+
+        $pdf = Pdf::loadView('payments.receipt-pdf', compact('payment'));
+        return $pdf->download('receipt-' . $payment->id . '.pdf');
     }
 }

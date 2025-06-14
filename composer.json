@@ -9,14 +9,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "barryvdh/laravel-dompdf": "^3.1",
         "filament/filament": "3.3",
         "filament/forms": "3.3",
         "filament/spatie-laravel-media-library-plugin": "2.*",
         "guzzlehttp/guzzle": "^7.9",
+        "laravel/breeze": "1.20",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
-        "laravel/tinker": "^2.8",
-        "midtrans/midtrans-php": "^2.6"
+        "laravel/socialite": "^5.21",
+        "laravel/tinker": "^2.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -24,7 +26,8 @@
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
-        "phpunit/phpunit": "^10.1",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
