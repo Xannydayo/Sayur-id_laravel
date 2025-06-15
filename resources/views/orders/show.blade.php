@@ -147,7 +147,11 @@
             <a href="{{ route('orders.index') }}" class="inline-flex items-center bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-full shadow-md hover:bg-gray-300 transition duration-300">
                 <i class="fas fa-arrow-left mr-2"></i> Kembali ke Pesanan
             </a>
-            @if ($order->status === 'pending')
+            @if ($order->status === 'completed' && $order->payments->count() > 0)
+                <a href="{{ route('payments.receipt.pdf', $order->payments->last()->id) }}" class="inline-flex items-center bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-blue-700 transition duration-300" target="_blank">
+                    Cetak PDF <i class="fas fa-file-pdf ml-2"></i>
+                </a>
+            @elseif ($order->status === 'pending')
                 <form action="{{ route('orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?');">
                     @csrf
                     @method('DELETE')

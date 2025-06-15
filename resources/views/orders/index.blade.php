@@ -77,9 +77,16 @@
                         <p class="text-gray-600 dark:text-gray-300 mb-1">Total: Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
                         <p class="text-gray-600 dark:text-gray-300 mb-1">Status: <span class="text-green-600 font-semibold">{{ ucfirst($order->status) }}</span></p>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">Tanggal: {{ $order->created_at->format('d M Y') }}</p>
-                        <a href="{{ route('orders.show', $order->id) }}" class="inline-flex items-center bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-green-700 transition duration-300">
-                            Detail Pesanan <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
+                        <div class="flex space-x-2">
+                            <a href="{{ route('orders.show', $order->id) }}" class="inline-flex items-center bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-green-700 transition duration-300">
+                                Detail Pesanan <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                            @if($order->payments->count() > 0)
+                                <a href="{{ route('payments.receipt.pdf', $order->payments->last()->id) }}" class="inline-flex items-center bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-blue-700 transition duration-300" target="_blank">
+                                    Cetak PDF <i class="fas fa-file-pdf ml-2"></i>
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 @endforeach
             </div>
