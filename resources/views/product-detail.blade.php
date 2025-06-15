@@ -60,6 +60,44 @@
     </div>
     <!-- Product Description End -->
 
+    <!-- Reviews Section Start -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-12">
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Ulasan Produk ({{ $product->reviews->count() }})</h3>
+
+        <div class="space-y-6">
+            @forelse ($product->reviews->sortByDesc('created_at') as $review)
+                <div class="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-2">
+                        <p class="font-semibold text-gray-800 dark:text-gray-100 mr-2">{{ $review->user->name }}</p>
+                        <div class="flex text-yellow-500">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $review->rating)
+                                    <i class="fas fa-star"></i>
+                                @else
+                                    <i class="far fa-star"></i>
+                                @endif
+                            @endfor
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 ml-auto">{{ $review->created_at->format('d M Y') }}</span>
+                    </div>
+                    @if ($review->image)
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/' . $review->image) }}" alt="Review Image" class="w-32 h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
+                        </div>
+                    @endif
+                    @if ($review->comment)
+                        <p class="text-gray-700 dark:text-gray-300">{{ $review->comment }}</p>
+                    @else
+                        <p class="text-gray-500 dark:text-gray-400 italic">Tidak ada komentar.</p>
+                    @endif
+                </div>
+            @empty
+                <p class="text-center text-gray-600 dark:text-gray-300">Belum ada ulasan untuk produk ini.</p>
+            @endforelse
+        </div>
+    </div>
+    <!-- Reviews Section End -->
+
     <!-- Related Products Start -->
     <div class="container mx-auto px-4 py-8">
         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-8 text-center">Produk Lainnya</h2>

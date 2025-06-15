@@ -36,7 +36,7 @@ class PaymentController extends Controller
 
         $order->update(['status' => 'processing']); // Perbarui status order menjadi processing setelah pembayaran
 
-        return redirect()->route('payments.show', $payment)
+        return redirect()->route('orders.index')
             ->with('success', 'Pembayaran berhasil diproses secara manual.');
     }
 

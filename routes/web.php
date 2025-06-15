@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\ReviewController;
 
 // Route custom kamu
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -33,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store'); // Manual payment store
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
     Route::get('payments/{payment}/receipt-pdf', [PaymentController::class, 'generateReceiptPdf'])->name('payments.receipt.pdf');
+
+    // Review Routes
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 });
 
 // Google Login Routes

@@ -78,6 +78,7 @@
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jumlah</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Harga Satuan</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Subtotal</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Ulasan</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
@@ -87,6 +88,55 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{{ $product->pivot->quantity }} kg</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">Rp {{ number_format($product->pivot->price, 0, ',', '.') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">Rp {{ number_format($product->pivot->quantity * $product->pivot->price, 0, ',', '.') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
+                            @php
+                                $userReview = $product->reviews->where('user_id', auth()->id())->where('order_id', $order->id)->first();
+                            @endphp
+                            @if($order->status === 'completed')
+                                @if($userReview)
+                                    <div class="mb-2">
+                                        <div class="flex items-center mb-1">
+                                            <span class="font-semibold mr-2">Rating:</span>
+                                            <span class="text-yellow-500">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $userReview->rating)
+                                                        <i class="fas fa-star"></i>
+                                                    @else
+                                                        <i class="far fa-star"></i>
+                                                    @endif
+                                                @endfor
+                                            </span>
+                                        </div>
+                                        @if($userReview->comment)
+                                            <div class="text-gray-700 dark:text-gray-300 mb-1">{{ $userReview->comment }}</div>
+                                        @endif
+                                        @if($userReview->image)
+                                            <img src="{{ asset('storage/' . $userReview->image) }}" alt="Review Image" class="w-20 h-20 object-cover rounded-lg border border-gray-300 dark:border-gray-600 mb-1">
+                                        @endif
+                                        <span class="text-xs text-gray-500">{{ $userReview->created_at->format('d M Y') }}</span>
+                                    </div>
+                                @else
+                                    <form action="{{ route('reviews.store') }}" method="POST" enctype="multipart/form-data" class="space-y-2 review-form">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                        <div class="flex items-center space-x-1 review-rating-container">
+                                            @for ($i = 5; $i >= 1; $i--)
+                                                <input type="radio" id="rating_{{ $product->id }}_{{ $i }}" name="rating" value="{{ $i }}" class="hidden" />
+                                                <label for="rating_{{ $product->id }}_{{ $i }}" class="cursor-pointer text-gray-400 dark:text-gray-500 hover:text-yellow-500 transition-colors duration-200 text-xl">
+                                                    <i class="fas fa-star"></i>
+                                                </label>
+                                            @endfor
+                                        </div>
+                                        <textarea name="comment" rows="2" placeholder="Tulis ulasan..." class="block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-green-500 dark:focus:border-green-600 focus:ring-green-500 dark:focus:ring-green-600 rounded-md shadow-sm text-xs"></textarea>
+                                        <input type="file" name="image" accept="image/*" class="block w-full text-xs text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 rounded-md shadow-sm">
+                                        <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700">Kirim Ulasan</button>
+                                    </form>
+                                @endif
+                            @else
+                                <span class="italic text-gray-400">Ulasan hanya bisa diberikan jika pesanan selesai.</span>
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -110,4 +160,71 @@
     </div>
 </div>
 
-@endsection 
+@endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.review-form').forEach(form => {
+        const ratingContainer = form.querySelector('.review-rating-container');
+        const ratingInputs = ratingContainer.querySelectorAll('input[name="rating"]');
+        const ratingLabels = ratingContainer.querySelectorAll('label[for^="rating_"]');
+
+        // Function to update star colors for this specific form
+        function updateStars(rating) {
+            ratingLabels.forEach((label, index) => {
+                const star = label.querySelector('i');
+                // Stars are ordered from 5 to 1 in HTML, so index 0 is 5, index 1 is 4, etc.
+                // We need to invert the index for comparison with the rating value.
+                if ((5 - index) <= rating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                    label.classList.remove('text-gray-400', 'dark:text-gray-500');
+                    label.classList.add('text-yellow-500');
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                    label.classList.remove('text-yellow-500');
+                    label.classList.add('text-gray-400', 'dark:text-gray-500');
+                }
+            });
+        }
+
+        // Handle click on stars
+        ratingLabels.forEach((label, index) => {
+            label.addEventListener('click', () => {
+                // The rating value is 5 - index, because stars are rendered from 5 to 1
+                const ratingValue = 5 - index;
+                const input = form.querySelector(`input[id="rating_${form.querySelector('input[name="product_id"]').value}_${ratingValue}"]`);
+                if (input) {
+                    input.checked = true;
+                    updateStars(ratingValue);
+                }
+            });
+
+            // Handle hover
+            label.addEventListener('mouseenter', () => {
+                const hoverRating = 5 - index;
+                updateStars(hoverRating);
+            });
+        });
+
+        // Handle mouse leave on the rating container
+        ratingContainer.addEventListener('mouseleave', () => {
+            const checkedInput = form.querySelector('input[name="rating"]:checked');
+            if (checkedInput) {
+                updateStars(parseInt(checkedInput.value));
+            } else {
+                updateStars(0);
+            }
+        });
+
+        // Initialize stars based on any pre-selected rating
+        const checkedInput = form.querySelector('input[name="rating"]:checked');
+        if (checkedInput) {
+            updateStars(parseInt(checkedInput.value));
+        }
+    });
+});
+</script>
+@endpush 
