@@ -135,11 +135,11 @@
                 <p class="text-sm mb-2"><i class="fa fa-envelope mr-2"></i> farid@gmail.com</p>
             </div>
             <div>
-                <h3 class="text-white text-xl font-bold mb-4">Newsletter</h3>
-                <p class="text-sm mb-4">Subscribe to our newsletter for the latest updates.</p>
+                <h3 class="text-white text-xl font-bold mb-4">Yuk, Dapatkan Kabar Terbaru Setiap Minggu</h3>
+                <p class="text-sm mb-4">Jangan lewatkan kabar terbaru, daftarkan email kamu sekarang</p>
                 <form class="flex">
                     <input type="email" placeholder="Your Email" class="px-4 py-2 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary-500 flex-grow dark:bg-gray-700 dark:text-gray-100">
-                    <button type="submit" class="bg-primary-600 text-white px-4 py-2 rounded-r-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500">Subscribe</button>
+                    <button type="submit" class="bg-primary-600 text-white px-4 py-2 rounded-r-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500">Berlangganan</button>
                 </form>
             </div>
         </div>
