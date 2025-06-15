@@ -1,85 +1,89 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Daftar Pesanan') }}
-        </h2>
-    </x-slot>
+@extends('layout')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if($orders->isEmpty())
-                        <div class="text-center py-4">
-                            <p class="text-gray-500 dark:text-gray-400">Belum ada pesanan.</p>
-                            <a href="{{ route('product') }}" class="inline-block mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                                Belanja Sekarang
-                            </a>
-                        </div>
-                    @else
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                <thead class="bg-gray-50 dark:bg-gray-700">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            No. Pesanan
-                                        </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Tanggal
-                                        </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Total
-                                        </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Status
-                                        </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Aksi
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                                    @foreach($orders as $order)
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                                {{ $order->order_number }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                                {{ $order->created_at->format('d/m/Y H:i') }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                                Rp {{ number_format($order->total_amount, 0, ',', '.') }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                    @if($order->status === 'pending') bg-yellow-100 text-yellow-800
-                                                    @elseif($order->status === 'processing') bg-blue-100 text-blue-800
-                                                    @elseif($order->status === 'completed') bg-green-100 text-green-800
-                                                    @else bg-red-100 text-red-800
-                                                    @endif">
-                                                    {{ ucfirst($order->status) }}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('orders.show', $order) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
-                                                    Detail
-                                                </a>
-                                                @if($order->status === 'pending')
-                                                <form action="{{ route('orders.destroy', $order) }}" method="POST" class="inline-block ml-2" onsubmit="return confirm('Yakin ingin menghapus pesanan ini?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Hapus</button>
-                                                </form>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
+@section('content')
+
+<!-- Single Page Header Start -->
+<div class="bg-green-600 py-16 text-white text-center shadow-lg">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-3">Lacak Pesanan Anda</h1>
+        <nav class="text-sm font-medium" aria-label="breadcrumb">
+            <ol class="flex justify-center items-center space-x-2">
+                <li><a href="{{ route('home') }}" class="hover:underline text-gray-100">Home</a></li>
+                <li class="flex items-center">
+                    <svg class="w-4 h-4 mx-2 text-gray-100" fill="currentColor" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <span class="text-white">Pesanan Saya</span>
+                </li>
+            </ol>
+        </nav>
     </div>
-</x-app-layout> 
+</div>
+<!-- Single Page Header End -->
+
+<div class="container mx-auto px-4 py-16">
+    @if (session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span class="block sm:inline">{{ session('success') }}</span>
+        </div>
+    @endif
+
+    @if ($orders->isEmpty())
+        <div class="text-center py-10">
+            <p class="text-gray-600 dark:text-gray-300 text-lg">Anda belum memiliki pesanan.</p>
+            <a href="{{ route('product') }}" class="mt-4 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-full hover:bg-green-700 transition duration-300">Mulai Belanja</a>
+        </div>
+    @else
+        <div class="mb-8">
+            <h2 class="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">Pesanan Pending</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach ($orders->where('status', 'pending') as $order)
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-l-4 border-yellow-500">
+                        @if ($order->products->first())
+                            <div class="flex items-center mb-4">
+                                <img src="{{ asset('storage/' . $order->products->first()->gambar) }}" alt="{{ $order->products->first()->nama }}" class="w-16 h-16 object-cover rounded-md mr-4 shadow-sm">
+                                <p class="text-lg font-semibold text-gray-800 dark:text-gray-100">{{ $order->products->first()->nama }}</p>
+                            </div>
+                        @endif
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Order #{{ $order->order_number }}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-1">Total: Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-1">Status: <span class="text-yellow-600 font-semibold">{{ ucfirst($order->status) }}</span></p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Tanggal: {{ $order->created_at->format('d M Y') }}</p>
+                        <a href="{{ route('orders.show', $order->id) }}" class="inline-flex items-center bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-green-700 transition duration-300">
+                            Detail Pesanan <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+            @if($orders->where('status', 'pending')->isEmpty())
+                <p class="text-gray-600 dark:text-gray-300 text-center py-4">Tidak ada pesanan pending saat ini.</p>
+            @endif
+        </div>
+
+        <div>
+            <h2 class="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">Pesanan Selesai</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach ($orders->where('status', 'completed') as $order)
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                        @if ($order->products->first())
+                            <div class="flex items-center mb-4">
+                                <img src="{{ asset('storage/' . $order->products->first()->gambar) }}" alt="{{ $order->products->first()->nama }}" class="w-16 h-16 object-cover rounded-md mr-4 shadow-sm">
+                                <p class="text-lg font-semibold text-gray-800 dark:text-gray-100">{{ $order->products->first()->nama }}</p>
+                            </div>
+                        @endif
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Order #{{ $order->order_number }}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-1">Total: Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-1">Status: <span class="text-green-600 font-semibold">{{ ucfirst($order->status) }}</span></p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Tanggal: {{ $order->created_at->format('d M Y') }}</p>
+                        <a href="{{ route('orders.show', $order->id) }}" class="inline-flex items-center bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-green-700 transition duration-300">
+                            Detail Pesanan <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+            @if($orders->where('status', 'completed')->isEmpty())
+                <p class="text-gray-600 dark:text-gray-300 text-center py-4">Tidak ada pesanan selesai saat ini.</p>
+            @endif
+        </div>
+    @endif
+</div>
+
+@endsection 

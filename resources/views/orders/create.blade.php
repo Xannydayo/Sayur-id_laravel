@@ -14,9 +14,12 @@
 
                         @if ($product)
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <div>
-                                <x-input-label for="product_name" :value="__('Product')" />
-                                <x-text-input id="product_name" type="text" class="mt-1 block w-full" value="{{ $product->name }}" disabled />
+                            <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center">
+                                <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}" class="w-20 h-20 object-cover rounded-md mr-4 shadow-sm">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">Produk: {{ $product->nama }}</h3>
+                                    <p class="text-lg text-green-700 dark:text-green-400">Harga: Rp {{ number_format($product->harga, 0, ',', '.') }} / kg</p>
+                                </div>
                             </div>
                             <div>
                                 <x-input-label for="quantity" :value="__('Quantity')" />
