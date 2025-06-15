@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         $products = Product::get();
         $categories = Category::get();
-        $promotion = Promotion::where('key', 'home')->get()[0];
+        $promotion = Promotion::where('key', 'home')->first();
         
         return view('home', compact('categories', 'products', 'promotion'));
     }

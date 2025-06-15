@@ -27,7 +27,7 @@ Ini adalah project web toko buah dan sayur berbasis Laravel. Project ini menggun
 3. `cp .env.example .env` lalu atur konfigurasi database, RajaOngkir, Midtrans, dan Google OAuth.
 4. `php artisan key:generate`
 5. `php artisan migrate --seed`
-6. `npm install && npm run dev` (opsional, jika ingin mengubah asset frontend)
+6. `npm install && npm run dev` 
 7. Jalankan server: `php artisan serve`
 
 ## Konfigurasi API
