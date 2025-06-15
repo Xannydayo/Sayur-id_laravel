@@ -36,6 +36,9 @@ class PaymentController extends Controller
 
         $order->update(['status' => 'processing']); // Perbarui status order menjadi processing setelah pembayaran
 
+        // Temporarily dump and die to inspect variables
+        // dd($payment, $order);
+
         return redirect()->route('orders.index')
             ->with('success', 'Pembayaran berhasil diproses secara manual.');
     }
