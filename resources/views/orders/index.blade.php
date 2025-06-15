@@ -33,9 +33,9 @@
         </div>
     @else
         <div class="mb-8">
-            <h2 class="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">Pesanan Pending</h2>
+            <h2 class="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">Pesanan Aktif</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach ($orders->where('status', 'pending') as $order)
+                @foreach ($orders->whereIn('status', ['pending', 'processing']) as $order)
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-l-4 border-yellow-500">
                         @if ($order->products->first())
                             <div class="flex items-center mb-4">
@@ -45,7 +45,11 @@
                         @endif
                         <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Order #{{ $order->order_number }}</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-1">Total: Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
-                        <p class="text-gray-600 dark:text-gray-300 mb-1">Status: <span class="text-yellow-600 font-semibold">{{ ucfirst($order->status) }}</span></p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-1">Status: <span class="
+                            @if($order->status === 'pending') text-yellow-600
+                            @elseif($order->status === 'processing') text-blue-600
+                            @endif
+                            font-semibold">{{ ucfirst($order->status) }}</span></p>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">Tanggal: {{ $order->created_at->format('d M Y') }}</p>
                         <a href="{{ route('orders.show', $order->id) }}" class="inline-flex items-center bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-green-700 transition duration-300">
                             Detail Pesanan <i class="fas fa-arrow-right ml-2"></i>
@@ -53,8 +57,8 @@
                     </div>
                 @endforeach
             </div>
-            @if($orders->where('status', 'pending')->isEmpty())
-                <p class="text-gray-600 dark:text-gray-300 text-center py-4">Tidak ada pesanan pending saat ini.</p>
+            @if($orders->whereIn('status', ['pending', 'processing'])->isEmpty())
+                <p class="text-gray-600 dark:text-gray-300 text-center py-4">Tidak ada pesanan aktif saat ini.</p>
             @endif
         </div>
 
