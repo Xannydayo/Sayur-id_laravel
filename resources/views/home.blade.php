@@ -76,24 +76,25 @@
 <!-- Featurs Section End -->
 
 <!-- Banner Section Start-->
-<div class="bg-green-600 dark:bg-green-800 py-16 my-10 rounded-lg mx-4 md:mx-auto max-w-6xl shadow-xl">
-    <div class="container mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-8">
-        <div class="w-full lg:w-1/2 text-center lg:text-left">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Promo Terbaik Bulan Ini</h1>
-            <p class="text-white text-lg mb-6 opacity-90">Dapatkan berbagai macam produk berkualitas dengan harga terjangkau.</p>
-            <a href="{{ route('product') }}" class="inline-block bg-white text-green-700 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-300">
-                Beli Sekarang <i class="fas fa-shopping-cart ml-2"></i>
-            </a>
-        </div>
-        <div class="w-full lg:w-1/2 flex justify-center lg:justify-end relative">
-            @if ($promotion)
-                <img src="{{ Storage::url($promotion->gambar) }}" class="w-full md:w-3/4 lg:w-full max-w-md rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-500" alt="Promotion Image">
-                
-            @else
-                <div class="bg-gray-200 dark:bg-gray-700 w-full md:w-3/4 lg:w-full max-w-md h-64 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400">
-                    No promotion image available.
-                </div>
-            @endif
+<div class="container mx-auto px-4">
+    <div class="bg-green-600 dark:bg-green-800 py-16 my-10 rounded-lg shadow-xl px-12">
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-16">
+            <div class="w-full lg:w-1/2 text-center lg:text-left">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Promo Terbaik Bulan Ini</h1>
+                <p class="text-base text-white mb-6 opacity-90">Dapatkan berbagai macam produk berkualitas dengan harga terjangkau.</p>
+                <a href="{{ route('product') }}" class="inline-block bg-white text-green-700 font-bold py-2.5 px-6 rounded-full shadow-lg hover:bg-gray-100 transition duration-300">
+                    Beli Sekarang <i class="fas fa-shopping-cart ml-2"></i>
+                </a>
+            </div>
+            <div class="w-full lg:w-1/2 flex justify-center lg:justify-end relative">
+                @if ($promotion)
+                    <img src="{{ Storage::url($promotion->gambar) }}" class="w-full md:w-3/4 lg:w-full max-w-sm rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-500" alt="Promotion Image">
+                @else
+                    <div class="bg-gray-200 dark:bg-gray-700 w-full md:w-3/4 lg:w-full max-w-sm h-64 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400">
+                        No promotion image available.
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 </div>

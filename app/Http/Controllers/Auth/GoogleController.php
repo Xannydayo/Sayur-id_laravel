@@ -20,26 +20,40 @@ class GoogleController extends Controller
     public function handleGoogleCallback()
     {
         try {
-            $user = Socialite::driver('google')->user();
-            
-            $finduser = User::where('google_id', $user->id)->first();
-            
-            if ($finduser) {
-                Auth::login($finduser);
-                return redirect()->intended('/');
+            $googleUser = Socialite::driver('google')->user();
+
+            // Attempt to find user by google_id first
+            $user = User::where('google_id', $googleUser->id)->first();
+
+            if ($user) {
+                // User found by google_id, log them in
+                Auth::login($user);
             } else {
-                $newUser = User::create([
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'google_id' => $user->id,
-                    'password' => Hash::make(Str::random(24))
-                ]);
-                
-                Auth::login($newUser);
-                return redirect()->intended('/');
+                // User not found by google_id, try finding by email
+                $user = User::where('email', $googleUser->email)->first();
+
+                if ($user) {
+                    // User found by email, update their google_id and log them in
+                    $user->google_id = $googleUser->id;
+                    $user->save();
+                    Auth::login($user);
+                } else {
+                    // No user found, create a new user
+                    $user = User::create([
+                        'name' => $googleUser->name,
+                        'email' => $googleUser->email,
+                        'google_id' => $googleUser->id,
+                        'password' => Hash::make(Str::random(24)), // Generate a random password
+                    ]);
+                    Auth::login($user);
+                }
             }
+
+            return redirect()->intended('/');
         } catch (\Exception $e) {
-            return redirect('auth/google');
+            // Log the error for debugging purposes (optional, but recommended)
+            // \Log::error('Google login error: ' . $e->getMessage());
+            return redirect('auth/google')->withErrors(['google_login' => 'Could not log in with Google. Please try again.']);
         }
     }
 } 

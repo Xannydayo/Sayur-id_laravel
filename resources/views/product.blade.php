@@ -3,15 +3,15 @@
 @section('content')
 
 <!-- Single Page Header Start -->
-<div class="bg-gradient-to-r from-green-500 to-green-700 py-16 text-white text-center shadow-lg">
+<div class="bg-green-600 py-16 text-white text-center shadow-lg">
     <div class="container mx-auto px-4">
         <h1 class="text-4xl md:text-5xl font-extrabold mb-3">Produk Kami</h1>
         <nav class="text-sm font-medium" aria-label="breadcrumb">
             <ol class="flex justify-center items-center space-x-2">
-                <li><a href="{{ route('home') }}" class="hover:underline">Home</a></li>
+                <li><a href="{{ route('home') }}" class="hover:underline text-gray-100">Home</a></li>
                 <li class="flex items-center">
-                    <svg class="w-4 h-4 mx-2" fill="currentColor" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
-                    <span class="text-gray-200">Produk</span>
+                    <svg class="w-4 h-4 mx-2 text-gray-100" fill="currentColor" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <span class="text-white">Produk</span>
                 </li>
             </ol>
         </nav>
@@ -40,13 +40,13 @@
             </div>
             
             @if ($promotion)
-            <div class="mt-8 bg-green-100 dark:bg-green-700 rounded-lg shadow-md overflow-hidden relative">
+            <div class="mt-8 bg-green-600 dark:bg-green-800 rounded-lg shadow-md overflow-hidden relative">
                 <img src="{{ Storage::url($promotion->gambar) }}" class="w-full h-48 object-cover" alt="Promotion Banner">
-                <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center p-4">
                     <div class="text-white text-center">
-                        <h3 class="text-3xl font-bold mb-2">Diskon {{ $promotion->discount_percentage ?? '' }}%</h3>
-                        <p class="text-lg">Semua Produk Pilihan</p>
-                        <a href="{{ route('product') }}" class="mt-4 inline-block bg-white text-green-700 font-semibold py-2 px-6 rounded-full hover:bg-gray-100 transition duration-300">Lihat Promo</a>
+                        <h3 class="text-2xl font-bold mb-2">Diskon {{ $promotion->discount_percentage ?? '' }}%</h3>
+                        <p class="text-base">Semua Produk Pilihan</p>
+                        <a href="{{ route('product') }}" class="mt-4 inline-block bg-white text-green-700 font-semibold py-2.5 px-6 rounded-full hover:bg-gray-100 transition duration-300">Lihat Promo</a>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
 
         <!-- Product List Start -->
         <div class="lg:w-3/4">
-            <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">Produk Segar Kami</h2>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">Produk Segar Kami</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach ($products as $product)
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105">
