@@ -22,6 +22,34 @@
     <!-- Tailwind CSS (assuming it's compiled via Laravel Mix/Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <!-- Custom Scrollbar Styles -->
+    <style>
+        /* For Webkit browsers (Chrome, Safari) */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #22c55e;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #16a34a;
+        }
+
+        /* For Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #22c55e #f1f1f1;
+        }
+    </style>
+
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-900 font-sans antialiased">
