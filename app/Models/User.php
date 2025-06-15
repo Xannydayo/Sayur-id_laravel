@@ -25,6 +25,8 @@ class User extends Authenticatable implements CanResetPassword
         'email',
         'password',
         'google_id',
+        'is_admin',
+        'profile_photo_path',
     ];
 
     /**
@@ -45,6 +47,7 @@ class User extends Authenticatable implements CanResetPassword
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_admin' => 'boolean',
     ];
 
     /**

@@ -19,15 +19,15 @@
                 </li>
             </ol>
         </nav>
-    </div>
-</div>
+                        </div>
+                        </div>
 <!-- Single Page Header End -->
 
 <div class="container mx-auto px-4 py-16">
     @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
             <span class="block sm:inline">{{ session('success') }}</span>
-        </div>
+                        </div>
     @endif
     @if ($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -36,13 +36,13 @@
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
-        </div>
+                        </div>
     @endif
 
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8">
         <h2 class="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">Informasi Pesanan</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300 mb-6">
-            <div>
+                        <div>
                 <p><span class="font-semibold">Nomor Pesanan:</span> #{{ $order->order_number }}</p>
                 <p><span class="font-semibold">Tanggal Pesanan:</span> {{ $order->created_at->format('d M Y H:i') }}</p>
                 <p><span class="font-semibold">Status:</span> 
@@ -56,18 +56,18 @@
                     </span>
                 </p>
                 <p><span class="font-semibold">Total Jumlah:</span> Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
-            </div>
-            <div>
+                        </div>
+                        <div>
                 <p><span class="font-semibold">Alamat Pengiriman:</span> {{ $order->shipping_address }}</p>
                 <p><span class="font-semibold">Telepon Pengiriman:</span> {{ $order->shipping_phone }}</p>
-                @if ($order->notes)
+                        @if ($order->notes)
                     <p><span class="font-semibold">Catatan:</span> {{ $order->notes }}</p>
                 @endif
                 @if ($order->courier)
                     <p><span class="font-semibold">Kurir:</span> {{ ucfirst($order->courier) }}</p>
-                @endif
-            </div>
-        </div>
+                        @endif
+                        </div>
+                    </div>
 
         <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Produk dalam Pesanan</h3>
         <div class="overflow-x-auto mb-6">
@@ -101,12 +101,12 @@
                                                 @for ($i = 1; $i <= 5; $i++)
                                                     @if ($i <= $userReview->rating)
                                                         <i class="fas fa-star"></i>
-                                                    @else
+                        @else
                                                         <i class="far fa-star"></i>
-                                                    @endif
+                        @endif
                                                 @endfor
                                             </span>
-                                        </div>
+                    </div>
                                         @if($userReview->comment)
                                             <div class="text-gray-700 dark:text-gray-300 mb-1">{{ $userReview->comment }}</div>
                                         @endif
@@ -114,7 +114,7 @@
                                             <img src="{{ asset('storage/' . $userReview->image) }}" alt="Review Image" class="w-20 h-20 object-cover rounded-lg border border-gray-300 dark:border-gray-600 mb-1">
                                         @endif
                                         <span class="text-xs text-gray-500">{{ $userReview->created_at->format('d M Y') }}</span>
-                                    </div>
+                            </div>
                                 @else
                                     <form action="{{ route('reviews.store') }}" method="POST" enctype="multipart/form-data" class="space-y-2 review-form">
                                         @csrf
@@ -127,7 +127,7 @@
                                                     <i class="fas fa-star"></i>
                                                 </label>
                                             @endfor
-                                        </div>
+                                </div>
                                         <textarea name="comment" rows="2" placeholder="Tulis ulasan..." class="block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-green-500 dark:focus:border-green-600 focus:ring-green-500 dark:focus:ring-green-600 rounded-md shadow-sm text-xs"></textarea>
                                         <input type="file" name="image" accept="image/*" class="block w-full text-xs text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 rounded-md shadow-sm">
                                         <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700">Kirim Ulasan</button>
@@ -141,7 +141,7 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
+                    </div>
 
         <div class="flex justify-between items-center">
             <a href="{{ route('orders.index') }}" class="inline-flex items-center bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-full shadow-md hover:bg-gray-300 transition duration-300">
@@ -159,10 +159,10 @@
                         <i class="fas fa-times-circle mr-2"></i> Batalkan Pesanan
                     </button>
                 </form>
-            @endif
-        </div>
-    </div>
-</div>
+                        @endif
+                    </div>
+                </div>
+            </div>
 
 @endsection
 

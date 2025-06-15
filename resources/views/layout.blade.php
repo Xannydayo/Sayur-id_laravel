@@ -42,7 +42,14 @@
                     </a>
                     <div class="relative group">
                         <button class="flex items-center text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium focus:outline-none">
-                            <i class="fas fa-user mr-2"></i> {{ Auth::user()->name }}
+                            @if (Auth::user()->profile_photo_path)
+                                <img class="h-6 w-6 rounded-full object-cover mr-2" src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}" />
+                            @else
+                                <svg class="h-6 w-6 text-gray-300 dark:text-gray-700 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 20.993V24H0v-2.993C0 17.514 4.032 14 9 14h6c4.968 0 9 3.514 9 6.993zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6z" />
+                                </svg>
+                            @endif
+                            {{ Auth::user()->name }}
                             <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>

@@ -85,9 +85,9 @@
                                 <a href="{{ route('payments.receipt.pdf', $order->payments->last()->id) }}" class="inline-flex items-center bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-blue-700 transition duration-300" target="_blank">
                                     Cetak PDF <i class="fas fa-file-pdf ml-2"></i>
                                 </a>
-                            @endif
+                                                @endif
                         </div>
-                    </div>
+                </div>
                 @endforeach
             </div>
             @if($orders->where('status', 'completed')->isEmpty())
@@ -95,6 +95,6 @@
             @endif
         </div>
     @endif
-</div>
+    </div>
 
 @endsection 
