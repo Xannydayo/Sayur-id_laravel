@@ -110,10 +110,10 @@
                 <h3 class="text-white text-xl font-bold mb-4">Sayur.id</h3>
                 <p class="text-sm">Fresh & Organic Groceries delivered to your doorstep.</p>
                 <div class="flex space-x-4 mt-4">
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/yogaviveka/?hl=en" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/yogaviveka/?hl=en" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/yogaviveka/?hl=en" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/yogaviveka/?hl=en" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
             <div>
