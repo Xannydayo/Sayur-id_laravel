@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Hero Section Start -->
-<div class="relative w-full h-screen bg-cover bg-center flex items-center justify-center text-white p-4" style="background-image: url('{{ asset('img/hero-background.jpg') }}');">
+<div class="relative w-full h-screen bg-cover bg-center flex items-center justify-center text-white p-4" style="background-image: url('{{ asset('img/456.jpg') }}');">
     <div class="absolute inset-0 bg-black opacity-60"></div> <!-- Overlay for better text readability -->
     <div class="relative z-10 text-center max-w-4xl mx-auto">
         <h4 class="text-xl md:text-2xl font-semibold text-green-400 mb-4 tracking-wide uppercase">Sayur.id - Kualitas Terbaik dari Petani Lokal</h4>
