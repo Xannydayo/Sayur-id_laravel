@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ProductQuestionController;
 
 // Route custom kamu
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -37,6 +38,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Review Routes
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+    // Product Question Routes
+    Route::post('/products/{product}/questions', [ProductQuestionController::class, 'store'])->name('product.questions.store');
+    Route::post('/product-questions/{question}/answer', [ProductQuestionController::class, 'answer'])->name('product.questions.answer')->middleware('admin');
 });
 
 // Google Login Routes

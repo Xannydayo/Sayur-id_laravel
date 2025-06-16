@@ -104,6 +104,55 @@
     </div>
     <!-- Reviews Section End -->
 
+    <!-- Q&A Section Start -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-12">
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Tanya Jawab ({{ $product->questions->count() }})</h3>
+
+        @auth
+            <form action="{{ route('product.questions.store', $product) }}" method="POST" class="mb-8">
+                @csrf
+                <div class="mb-4">
+                    <label for="question" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Ajukan Pertanyaan</label>
+                    <textarea name="question" id="question" rows="3" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white" required minlength="10"></textarea>
+                </div>
+                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                    Kirim Pertanyaan
+                </button>
+            </form>
+        @else
+            <div class="mb-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <p class="text-gray-600 dark:text-gray-300">Silakan <a href="{{ route('login') }}" class="text-green-600 dark:text-green-400 hover:underline">login</a> untuk mengajukan pertanyaan.</p>
+            </div>
+        @endauth
+
+        <div class="space-y-6">
+            @forelse ($product->questions->sortByDesc('created_at') as $question)
+                <div class="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-2">
+                        <p class="font-semibold text-gray-800 dark:text-gray-100 mr-2">{{ $question->user->name }}</p>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">{{ $question->created_at->format('d M Y') }}</span>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $question->question }}</p>
+                    
+                    @if ($question->answer)
+                        <div class="mt-4 pl-4 border-l-4 border-green-500">
+                            <div class="flex items-center mb-2">
+                                <p class="text-sm font-semibold text-green-600 dark:text-green-400">Jawaban dari Admin:</p>
+                                <span class="text-sm text-gray-500 dark:text-gray-400 ml-2">{{ $question->answered_at->format('d M Y') }}</span>
+                            </div>
+                            <p class="text-gray-700 dark:text-gray-300">{{ $question->answer }}</p>
+                        </div>
+                    @else
+                        <p class="text-sm text-gray-500 dark:text-gray-400 italic">Belum ada jawaban.</p>
+                    @endif
+                </div>
+            @empty
+                <p class="text-center text-gray-600 dark:text-gray-300">Belum ada pertanyaan untuk produk ini.</p>
+            @endforelse
+        </div>
+    </div>
+    <!-- Q&A Section End -->
+
     <!-- Related Products Start -->
     <div class="container mx-auto px-4 py-8">
         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-8 text-center">Produk Lainnya</h2>

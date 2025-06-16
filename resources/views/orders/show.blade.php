@@ -19,15 +19,15 @@
                 </li>
             </ol>
         </nav>
-                        </div>
-                        </div>
+    </div>
+</div>
 <!-- Single Page Header End -->
 
 <div class="container mx-auto px-4 py-16">
     @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
             <span class="block sm:inline">{{ session('success') }}</span>
-                        </div>
+        </div>
     @endif
     @if ($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -36,44 +36,70 @@
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
-                        </div>
+        </div>
     @endif
 
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8">
         <h2 class="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">Informasi Pesanan</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300 mb-6">
-                        <div>
-                <p><span class="font-semibold">Nomor Pesanan:</span> #{{ $order->order_number }}</p>
-                <p><span class="font-semibold">Tanggal Pesanan:</span> {{ $order->created_at->format('d M Y H:i') }}</p>
-                <p><span class="font-semibold">Status:</span> 
-                    <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                        @if($order->status === 'pending') bg-yellow-100 text-yellow-800
-                        @elseif($order->status === 'processing') bg-blue-100 text-blue-800
-                        @elseif($order->status === 'completed') bg-green-100 text-green-800
-                        @else bg-red-100 text-red-800
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 text-gray-700 dark:text-gray-300 mb-6">
+            <div>
+                <p class="mb-2"><span class="font-semibold">Nomor Pesanan:</span> #{{ $order->order_number }}</p>
+                <p class="mb-2"><span class="font-semibold">Tanggal Pesanan:</span> {{ $order->created_at->format('d M Y H:i') }}</p>
+                <p class="mb-2"><span class="font-semibold">Status:</span> 
+                    <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
+                        @if($order->status === 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100
+                        @elseif($order->status === 'processing') bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100
+                        @elseif($order->status === 'completed') bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100
+                        @else bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100
                         @endif">
                         {{ ucfirst($order->status) }}
                     </span>
                 </p>
-                <p><span class="font-semibold">Total Jumlah:</span> Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
-                        </div>
-                        <div>
-                <p><span class="font-semibold">Alamat Pengiriman:</span> {{ $order->shipping_address }}</p>
-                <p><span class="font-semibold">Telepon Pengiriman:</span> {{ $order->shipping_phone }}</p>
-                        @if ($order->notes)
-                    <p><span class="font-semibold">Catatan:</span> {{ $order->notes }}</p>
+                <p class="mb-2"><span class="font-semibold">Total Jumlah:</span> <span class="text-lg font-bold text-green-700 dark:text-green-400">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</span></p>
+            </div>
+            <div>
+                <p class="mb-2"><span class="font-semibold">Alamat Pengiriman:</span> {{ $order->shipping_address }}</p>
+                <p class="mb-2"><span class="font-semibold">Telepon Pengiriman:</span> {{ $order->shipping_phone }}</p>
+                @if ($order->notes)
+                    <p class="mb-2"><span class="font-semibold">Catatan:</span> {{ $order->notes }}</p>
                 @endif
                 @if ($order->courier)
-                    <p><span class="font-semibold">Kurir:</span> {{ ucfirst($order->courier) }}</p>
-                        @endif
-                        </div>
-                    </div>
+                    <p class="mb-2"><span class="font-semibold">Kurir:</span> {{ ucfirst($order->courier) }}</p>
+                @endif
+                @if ($order->payments->isNotEmpty())
+                    @php
+                        $payment = $order->payments->first();
+                        $paymentMethod = '';
+                        switch($payment->payment_method) {
+                            case 'bank_transfer':
+                                $paymentMethod = 'Transfer Bank';
+                                break;
+                            case 'e_wallet':
+                                $paymentMethod = 'E-Wallet';
+                                break;
+                            case 'qris':
+                                $paymentMethod = 'QRIS';
+                                break;
+                            case 'cash':
+                                $paymentMethod = 'Cash on Delivery';
+                                break;
+                            default:
+                                $paymentMethod = ucfirst(str_replace('_', ' ', $payment->payment_method));
+                        }
+                    @endphp
+                    <p class="mb-2"><span class="font-semibold">Metode Pembayaran:</span> {{ $paymentMethod }}</p>
+                @else
+                    <p class="mb-2 italic text-gray-500 dark:text-gray-400">Belum ada informasi pembayaran.</p>
+                @endif
+            </div>
+        </div>
 
         <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Produk dalam Pesanan</h3>
-        <div class="overflow-x-auto mb-6">
+        <div class="overflow-x-auto mb-6 rounded-lg shadow-md">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead class="bg-gray-50 dark:bg-gray-700">
                     <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Gambar Produk</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Produk</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jumlah</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Harga Satuan</th>
@@ -84,6 +110,9 @@
                 <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                     @foreach($order->products as $product)
                     <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}" class="w-16 h-16 object-cover rounded-md shadow-sm">
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ $product->nama }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{{ $product->pivot->quantity }} kg</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">Rp {{ number_format($product->pivot->price, 0, ',', '.') }}</td>
@@ -101,12 +130,12 @@
                                                 @for ($i = 1; $i <= 5; $i++)
                                                     @if ($i <= $userReview->rating)
                                                         <i class="fas fa-star"></i>
-                        @else
+                                                    @else
                                                         <i class="far fa-star"></i>
-                        @endif
+                                                    @endif
                                                 @endfor
                                             </span>
-                    </div>
+                                        </div>
                                         @if($userReview->comment)
                                             <div class="text-gray-700 dark:text-gray-300 mb-1">{{ $userReview->comment }}</div>
                                         @endif
@@ -114,20 +143,20 @@
                                             <img src="{{ asset('storage/' . $userReview->image) }}" alt="Review Image" class="w-20 h-20 object-cover rounded-lg border border-gray-300 dark:border-gray-600 mb-1">
                                         @endif
                                         <span class="text-xs text-gray-500">{{ $userReview->created_at->format('d M Y') }}</span>
-                            </div>
+                                    </div>
                                 @else
-                                    <form action="{{ route('reviews.store') }}" method="POST" enctype="multipart/form-data" class="space-y-2 review-form">
+                                    <form action="{{ route('reviews.store') }}" method="POST" enctype="multipart/form-data" class="space-y-2 review-form" data-product-id="{{ $product->id }}">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <input type="hidden" name="order_id" value="{{ $order->id }}">
                                         <div class="flex items-center space-x-1 review-rating-container">
                                             @for ($i = 5; $i >= 1; $i--)
                                                 <input type="radio" id="rating_{{ $product->id }}_{{ $i }}" name="rating" value="{{ $i }}" class="hidden" />
-                                                <label for="rating_{{ $product->id }}_{{ $i }}" class="cursor-pointer text-gray-400 dark:text-gray-500 hover:text-yellow-500 transition-colors duration-200 text-xl">
-                                                    <i class="fas fa-star"></i>
+                                                <label for="rating_{{ $product->id }}_{{ $i }}" class="cursor-pointer text-gray-400 dark:text-gray-500 text-xl">
+                                                    <i class="far fa-star"></i>
                                                 </label>
                                             @endfor
-                                </div>
+                                        </div>
                                         <textarea name="comment" rows="2" placeholder="Tulis ulasan..." class="block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-green-500 dark:focus:border-green-600 focus:ring-green-500 dark:focus:ring-green-600 rounded-md shadow-sm text-xs"></textarea>
                                         <input type="file" name="image" accept="image/*" class="block w-full text-xs text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 rounded-md shadow-sm">
                                         <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700">Kirim Ulasan</button>
@@ -141,7 +170,7 @@
                     @endforeach
                 </tbody>
             </table>
-                    </div>
+        </div>
 
         <div class="flex justify-between items-center">
             <a href="{{ route('orders.index') }}" class="inline-flex items-center bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-full shadow-md hover:bg-gray-300 transition duration-300">
@@ -159,11 +188,9 @@
                         <i class="fas fa-times-circle mr-2"></i> Batalkan Pesanan
                     </button>
                 </form>
-                        @endif
-                    </div>
-                </div>
-            </div>
-
+            @endif
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -173,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const ratingContainer = form.querySelector('.review-rating-container');
         const ratingInputs = ratingContainer.querySelectorAll('input[name="rating"]');
         const ratingLabels = ratingContainer.querySelectorAll('label[for^="rating_"]');
+        const productId = form.dataset.productId; // Get product ID from data attribute
 
         // Function to update star colors for this specific form
         function updateStars(rating) {
@@ -198,35 +226,21 @@ document.addEventListener('DOMContentLoaded', function() {
         ratingLabels.forEach((label, index) => {
             label.addEventListener('click', () => {
                 // The rating value is 5 - index, because stars are rendered from 5 to 1
-                const ratingValue = 5 - index;
-                const input = form.querySelector(`input[id="rating_${form.querySelector('input[name="product_id"]').value}_${ratingValue}"]`);
-                if (input) {
-                    input.checked = true;
-                    updateStars(ratingValue);
+                const clickedRating = 5 - index;
+                // Update hidden input
+                const hiddenInput = form.querySelector(`input[id="rating_${productId}_${clickedRating}"]`); // Use productId
+                if (hiddenInput) {
+                    hiddenInput.checked = true;
                 }
-            });
-
-            // Handle hover
-            label.addEventListener('mouseenter', () => {
-                const hoverRating = 5 - index;
-                updateStars(hoverRating);
+                // Update star visuals
+                updateStars(clickedRating);
             });
         });
 
-        // Handle mouse leave on the rating container
-        ratingContainer.addEventListener('mouseleave', () => {
-            const checkedInput = form.querySelector('input[name="rating"]:checked');
-            if (checkedInput) {
-                updateStars(parseInt(checkedInput.value));
-            } else {
-                updateStars(0);
-            }
-        });
-
-        // Initialize stars based on any pre-selected rating
-        const checkedInput = form.querySelector('input[name="rating"]:checked');
-        if (checkedInput) {
-            updateStars(parseInt(checkedInput.value));
+        // Set initial star state based on current review data (if any)
+        const initialRatingInput = form.querySelector('input[name="rating"]:checked');
+        if (initialRatingInput) {
+            updateStars(parseInt(initialRatingInput.value));
         }
     });
 });

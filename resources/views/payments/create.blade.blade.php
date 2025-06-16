@@ -45,44 +45,15 @@
 
                         <!-- Payment Method -->
                         <div>
-                            <x-input-label for="payment_method" :value="__('Pilih Metode Pembayaran')" class="text-lg font-medium mb-4" />
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <label for="payment_bank_transfer" class="flex items-center p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">
-                                    <input type="radio" id="payment_bank_transfer" name="payment_method" value="bank_transfer" class="form-radio h-5 w-5 text-green-600" required>
-                                    <div class="ml-4">
-                                        <i class="fas fa-bank fa-2x text-blue-500 dark:text-blue-400 mb-2"></i>
-                                        <span class="text-lg font-semibold text-gray-800 dark:text-gray-100 block">Transfer Bank</span>
-                                        <span class="text-sm text-gray-600 dark:text-gray-300">BCA, Mandiri, BNI, BRI</span>
-                                    </div>
-                                </label>
-
-                                <label for="payment_e_wallet" class="flex items-center p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">
-                                    <input type="radio" id="payment_e_wallet" name="payment_method" value="e_wallet" class="form-radio h-5 w-5 text-green-600" required>
-                                    <div class="ml-4">
-                                        <i class="fas fa-wallet fa-2x text-purple-500 dark:text-purple-400 mb-2"></i>
-                                        <span class="text-lg font-semibold text-gray-800 dark:text-gray-100 block">E-Wallet</span>
-                                        <span class="text-sm text-gray-600 dark:text-gray-300">GoPay, OVO, DANA, LinkAja</span>
-                                    </div>
-                                </label>
-
-                                <label for="payment_cash" class="flex items-center p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">
-                                    <input type="radio" id="payment_cash" name="payment_method" value="cash" class="form-radio h-5 w-5 text-green-600" required>
-                                    <div class="ml-4">
-                                        <i class="fas fa-money-bill-wave fa-2x text-yellow-600 dark:text-yellow-500 mb-2"></i>
-                                        <span class="text-lg font-semibold text-gray-800 dark:text-gray-100 block">Cash on Delivery</span>
-                                        <span class="text-sm text-gray-600 dark:text-gray-300">Bayar di tempat saat barang sampai</span>
-                                    </div>
-                                </label>
-
-                                <label for="payment_qris" class="flex items-center p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">
-                                    <input type="radio" id="payment_qris" name="payment_method" value="qris" class="form-radio h-5 w-5 text-green-600" required>
-                                    <div class="ml-4">
-                                        <i class="fas fa-qrcode fa-2x text-red-500 dark:text-red-400 mb-2"></i>
-                                        <span class="text-lg font-semibold text-gray-800 dark:text-gray-100 block">QRIS</span>
-                                        <span class="text-sm text-gray-600 dark:text-gray-300">Scan QR Code untuk pembayaran instan</span>
-                                    </div>
-                                </label>
-                            </div>
+                            <x-input-label for="payment_method" :value="__('Pilih Metode Pembayaran')" class="text-lg font-medium" />
+                            <select id="payment_method" name="payment_method" class="mt-2 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 focus:ring-green-500 focus:border-green-500 rounded-lg shadow-sm" required>
+                                <option value="">-- Pilih Metode Pembayaran --</option>
+                                <option value="bank_transfer">Transfer Bank (BCA, Mandiri, BNI, BRI)</option>
+                                <option value="e_wallet">E-Wallet (GoPay, OVO, DANA, LinkAja)</option>
+                                <option value="qris">QRIS (Scan QR Code)</option>
+                                <option value="cash">Cash on Delivery (Bayar di tempat)</option>
+                                <option value="other">Lainnya</option>
+                            </select>
                             <x-input-error :messages="$errors->get('payment_method')" class="mt-2" />
                         </div>
 

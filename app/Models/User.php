@@ -27,6 +27,12 @@ class User extends Authenticatable implements CanResetPassword
         'google_id',
         'is_admin',
         'profile_photo_path',
+        'address',
+        'city',
+        'province',
+        'postal_code',
+        'is_default_address',
+        'phone',
     ];
 
     /**
