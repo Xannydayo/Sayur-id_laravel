@@ -90,6 +90,12 @@
                     @else
                         <p class="text-gray-500 dark:text-gray-400 italic">Tidak ada komentar.</p>
                     @endif
+                    @if ($review->admin_reply)
+                        <div class="mt-4 pl-4 border-l-4 border-green-500">
+                            <p class="text-sm font-semibold text-green-600 dark:text-green-400">Admin Reply:</p>
+                            <p class="text-gray-700 dark:text-gray-300">{{ $review->admin_reply }}</p>
+                        </div>
+                    @endif
                 </div>
             @empty
                 <p class="text-center text-gray-600 dark:text-gray-300">Belum ada ulasan untuk produk ini.</p>

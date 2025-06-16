@@ -1,4 +1,4 @@
-@extends('layout')
+ @extends('layout')
 
 @section('content')
 <!-- Hero Section Start -->
@@ -28,7 +28,7 @@
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         @foreach ($categories as $category)
-        <a href="{{ route('product.category',$category->slug) }}" class="block bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group">
+        <a href="#" class="block bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group">
             <div class="relative overflow-hidden">
                 <img src="{{ asset('storage/' . $category->gambar) }}" class="w-full h-40 object-cover object-center group-hover:scale-110 transition-transform duration-500" alt="{{ $category->judul }}">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>

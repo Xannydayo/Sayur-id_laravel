@@ -63,6 +63,17 @@
                 <a href="{{ route('home') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Home</a>
                 <a href="{{ route('product') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Produk</a>
                 <a href="{{ route('contact') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Kontak Kami</a>
+                <div>
+                    <form action="{{ route('product') }}" method="GET" class="flex items-center">
+                        <input type="text" name="search" placeholder="Cari produk..." 
+                            class="px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                            value="{{ request('search') }}">
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-r-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                
 
                 @auth
                     <a href="{{ route('orders.index') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">

@@ -10,11 +10,24 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $categories = Category::with('products')->get();
-        $products = Product::with('category')->get();
+        
+        $query = Product::with('category');
+        
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                  ->orWhere('deskripsi_singkat', 'like', "%{$search}%")
+                  ->orWhere('deskripsi_panjang', 'like', "%{$search}%");
+            });
+        }
+        
+        $products = $query->get();
         $promotion = Promotion::where('key', 'home')->first();
+        
         return view('product', compact('categories', 'products', 'promotion'));
     }
 

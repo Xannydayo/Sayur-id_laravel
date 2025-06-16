@@ -49,6 +49,11 @@ class OrderResource extends Resource
                     ->rows(3)
                     ->nullable()
                     ->disabled(),
+                Forms\Components\Textarea::make('review')
+                    ->label('review')
+                    ->rows(3)
+                    ->nullable()
+                    ->disabled(),
                 Forms\Components\TextInput::make('courier')
                     ->label('Courier')
                     ->nullable()
