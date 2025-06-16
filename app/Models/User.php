@@ -71,4 +71,9 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->hasMany(Review::class);
     }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

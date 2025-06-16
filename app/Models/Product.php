@@ -30,4 +30,20 @@ class Product extends Model
     {
         return $this->hasMany(ProductQuestion::class);
     }
+
+    /**
+     * Get the average rating for the product.
+     */
+    public function getAverageRatingAttribute(): float
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
+
+    /**
+     * Get the total number of reviews for the product.
+     */
+    public function getTotalReviewsAttribute(): int
+    {
+        return $this->reviews()->count();
+    }
 }

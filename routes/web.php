@@ -9,6 +9,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductQuestionController;
+use App\Http\Controllers\WishlistController;
 
 // Route custom kamu
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -26,6 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // Wishlist routes
+    Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 });
 
 // Order and Payment Routes

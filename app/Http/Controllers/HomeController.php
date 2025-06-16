@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Promotion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -15,7 +16,12 @@ class HomeController extends Controller
         $categories = Category::get();
         $promotion = Promotion::where('key', 'home')->first();
         
-        return view('home', compact('categories', 'products', 'promotion'));
+        $wishlistedProductIds = [];
+        if (Auth::check()) {
+            $wishlistedProductIds = Auth::user()->wishlists->pluck('product_id')->toArray();
+        }
+
+        return view('home', compact('categories', 'products', 'promotion', 'wishlistedProductIds'));
     }
 
     public function contact()

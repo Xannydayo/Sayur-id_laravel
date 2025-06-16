@@ -1,4 +1,4 @@
- @extends('layout')
+@extends('layout')
 
 @section('content')
 <!-- Hero Section Start -->
@@ -110,10 +110,33 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         @foreach($products as $product)
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105">
-            <img src="{{ asset('storage/' . $product->gambar) }}" class="w-full h-48 object-cover" alt="{{ $product->nama }}">
+            <div class="relative">
+                <img src="{{ asset('storage/' . $product->gambar) }}" class="w-full h-48 object-cover" alt="{{ $product->nama }}">
+                @auth
+                    <button onclick="toggleWishlist(this, {{ $product->id }})" class="absolute top-2 right-2 text-gray-400 hover:text-red-500 focus:outline-none transition-colors duration-300 {{ in_array($product->id, $wishlistedProductIds) ? 'text-red-500' : '' }}">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </button>
+                @endauth
+            </div>
             <div class="p-6">
                 <a href="{{ route('product.show', $product->slug) }}" class="block text-xl font-semibold text-gray-800 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 mb-2">{{ $product->nama }}</a>
                 <h4 class="text-2xl font-bold text-green-700 dark:text-green-400 mb-3">Rp {{ number_format($product->harga, 0, ',', '.') }} / kg</h4>
+                @if($product->total_reviews > 0)
+                    <div class="flex items-center mb-3">
+                        <div class="flex text-yellow-500 mr-2">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= round($product->average_rating))
+                                    <i class="fas fa-star"></i>
+                                @else
+                                    <i class="far fa-star"></i>
+                                @endif
+                            @endfor
+                        </div>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">({{ $product->total_reviews }})</span>
+                    </div>
+                @endif
                 <a href="{{ route('product.show', $product->slug) }}"
                     class="inline-flex items-center bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-green-700 transition duration-300">
                     <i class="fa fa-eye mr-2"></i> Detail

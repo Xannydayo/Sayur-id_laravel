@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Sayur.id, Organic, Vegetables, Fruits, Groceries, Online Store" name="keywords">
     <meta content="Sayur.id offers fresh and organic vegetables and fruits delivered to your doorstep." name="description">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -95,6 +96,7 @@
                         </button>
                         <div class="absolute right-0 top-full w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg pt-1 pb-1 hidden group-hover:block pointer-events-auto z-50">
                             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Profile</a>
+                            <a href="{{ route('wishlist.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Wishlist</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Logout</button>
@@ -214,6 +216,32 @@
                 behavior: 'smooth'
             });
         });
+
+        function toggleWishlist(button, productId) {
+            fetch(`/wishlist/toggle`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').content
+                },
+                body: JSON.stringify({ product_id: productId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const heartIcon = button.querySelector('svg');
+                if (data.status === 'added') {
+                    heartIcon.classList.add('text-red-500');
+                    heartIcon.classList.remove('text-gray-400'); // Ensure gray is removed if it was there
+                } else if (data.status === 'removed') {
+                    heartIcon.classList.remove('text-red-500');
+                    heartIcon.classList.add('text-gray-400'); // Ensure it returns to gray
+                }
+            })
+            .catch(error => {
+                console.error('Error toggling wishlist:', error);
+                // Optionally, revert the UI state or show an error message
+            });
+        }
     </script>
 
     @stack('scripts')

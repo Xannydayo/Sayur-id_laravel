@@ -46,6 +46,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        // Redirect new users to profile page
+        return redirect()->route('profile.edit')->with('status', 'Please complete your profile information.');
     }
 }
