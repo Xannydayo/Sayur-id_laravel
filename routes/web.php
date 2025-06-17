@@ -10,6 +10,8 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductQuestionController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 // Route custom kamu
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -36,7 +38,7 @@ Route::middleware('auth')->group(function () {
 // Order and Payment Routes
 Route::middleware(['auth'])->group(function () {
     Route::resource('orders', OrderController::class);
-    Route::get('orders/{order}/payment', [PaymentController::class, 'create'])->name('payments.create');
+    Route::post('orders/{order}/confirm', [OrderController::class, 'confirm'])->name('orders.confirm');
     Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store'); // Manual payment store
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
     Route::get('payments/{payment}/receipt-pdf', [PaymentController::class, 'generateReceiptPdf'])->name('payments.receipt.pdf');
@@ -47,6 +49,17 @@ Route::middleware(['auth'])->group(function () {
     // Product Question Routes
     Route::post('/products/{product}/questions', [ProductQuestionController::class, 'store'])->name('product.questions.store');
     Route::post('/product-questions/{question}/answer', [ProductQuestionController::class, 'answer'])->name('product.questions.answer')->middleware('admin');
+
+    // Cart Routes
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+    // Checkout route
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/payment/{order}', [\App\Http\Controllers\PaymentController::class, 'index'])->name('payment');
 });
 
 // Google Login Routes
@@ -61,4 +74,4 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Route auth dari Breeze
-require __DIR__.'/auth.php';
+require __DIR__.'/auth.php'; 

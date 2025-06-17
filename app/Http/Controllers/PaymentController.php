@@ -9,7 +9,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class PaymentController extends Controller
 {
-    public function create(Order $order)
+    public function index(Order $order)
     {
         return view('payments.create', compact('order'));
     }

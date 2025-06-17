@@ -19,7 +19,26 @@
                                 <p class="text-lg">{{ $order->order_number }}</p>
                             </div>
                             <div>
-                                <p class="font-medium">Total Jumlah Pembayaran:</p>
+                                <p class="font-medium">Subtotal:</p>
+                                <p class="text-lg">Rp {{ number_format($order->subtotal, 0, ',', '.') }}</p>
+                            </div>
+                            @if($order->discount_amount > 0)
+                            <div>
+                                <p class="font-medium">Diskon:</p>
+                                <p class="text-lg text-green-600">- Rp {{ number_format($order->discount_amount, 0, ',', '.') }}</p>
+                                @if($order->coupon_code)
+                                <p class="text-sm text-gray-500">Kupon: {{ $order->coupon_code }}</p>
+                                @endif
+                            </div>
+                            @endif
+                            @if($order->shipping_cost > 0)
+                            <div>
+                                <p class="font-medium">Biaya Pengiriman ({{ $order->courier }}):</p>
+                                <p class="text-lg">Rp {{ number_format($order->shipping_cost, 0, ',', '.') }}</p>
+                            </div>
+                            @endif
+                            <div>
+                                <p class="font-medium">Total Pembayaran:</p>
                                 <p class="text-xl font-semibold text-green-700 dark:text-green-400">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
                             </div>
                             <div>
@@ -30,12 +49,6 @@
                                     @endforeach
                                 </ul>
                             </div>
-                             @if ($order->courier)
-                            <div>
-                                <p class="font-medium">Biaya Pengiriman ({{ $order->courier }}):</p>
-                                <p class="text-lg">Rp {{ number_format($order->getCourierPrice(), 0, ',', '.') }}</p>
-                            </div>
-                            @endif
                         </div>
                     </div>
 

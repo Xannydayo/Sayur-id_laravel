@@ -10,7 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">Formulir Pemesanan</h3>
-                    <form method="POST" action="{{ route('orders.store') }}" class="space-y-8">
+                    <form method="POST" action="{{ route('orders.store') }}" class="space-y-8" onsubmit="console.log('Form submitted');">
                         @csrf
 
                         @if ($product)
@@ -45,10 +45,17 @@
                             <x-input-error :messages="$errors->get('shipping_phone')" class="mt-2" />
                         </div>
 
+                        <!-- Coupon Code -->
+                        <div>
+                            <x-input-label for="coupon_code" :value="__('Kode Kupon (Opsional)')" class="text-lg font-medium" />
+                            <x-text-input id="coupon_code" name="coupon_code" type="text" class="mt-2 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-green-500 focus:border-green-500 dark:bg-gray-900 dark:text-gray-100" placeholder="Masukkan kode kupon" value="{{ old('coupon_code') }}" />
+                            <x-input-error :messages="$errors->get('coupon_code')" class="mt-2" />
+                        </div>
+
                         <!-- Courier -->
                         <div>
                             <x-input-label for="courier" :value="__('Pilih Kurir Pengiriman')" class="text-lg font-medium" />
-                            <select id="courier" name="courier" class="mt-2 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 focus:ring-green-500 focus:border-green-500 rounded-lg shadow-sm" onchange="updateCourierInfo()">
+                            <select id="courier" name="courier" class="mt-2 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 focus:ring-green-500 focus:border-green-500 rounded-lg shadow-sm">
                                 <option value="">-- Pilih Kurir --</option>
                                 <option value="JNE" data-price="15000" data-estimate="2-3 hari">JNE</option>
                                 <option value="TIKI" data-price="14000" data-estimate="2-4 hari">TIKI</option>
@@ -68,7 +75,7 @@
                         </div>
 
                         <div class="flex items-center justify-end">
-                            <x-primary-button class="ml-4 px-8 py-3 bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800 text-white font-bold rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                            <x-primary-button type="submit" class="ml-4 px-8 py-3 bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800 text-white font-bold rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
                                 {{ __('Buat Pesanan') }} <i class="fas fa-arrow-right ml-2"></i>
                             </x-primary-button>
                         </div>
@@ -84,15 +91,24 @@
 function updateCourierInfo() {
     const select = document.getElementById('courier');
     const infoDiv = document.getElementById('courier-info');
-    const selected = select.options[select.selectedIndex];
-    const price = selected.getAttribute('data-price');
-    const estimate = selected.getAttribute('data-estimate');
-    if (price && estimate) {
-        infoDiv.innerHTML = `Ongkir: Rp ${parseInt(price).toLocaleString('id-ID')}<br>Estimasi Pengiriman: ${estimate}`;
-    } else {
-        infoDiv.innerHTML = 'Pilih kurir untuk melihat informasi ongkir dan estimasi pengiriman.';
+    if (select && infoDiv) {
+        const selected = select.options[select.selectedIndex];
+        const price = selected.getAttribute('data-price');
+        const estimate = selected.getAttribute('data-estimate');
+        if (price && estimate) {
+            infoDiv.innerHTML = `Ongkir: Rp ${parseInt(price).toLocaleString('id-ID')}<br>Estimasi Pengiriman: ${estimate}`;
+        } else {
+            infoDiv.innerHTML = 'Pilih kurir untuk melihat informasi ongkir dan estimasi pengiriman.';
+        }
     }
 }
-document.addEventListener('DOMContentLoaded', updateCourierInfo);
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateCourierInfo();
+    const courierSelect = document.getElementById('courier');
+    if (courierSelect) {
+        courierSelect.addEventListener('change', updateCourierInfo);
+    }
+});
 </script>
 @endpush 

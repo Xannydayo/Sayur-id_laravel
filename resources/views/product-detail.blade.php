@@ -39,9 +39,19 @@
                     {!! $product->deskripsi_singkat !!}
                 </div>
                 @auth
-                    <a href="{{ route('orders.create', ['product_id' => $product->id]) }}" class="inline-flex items-center bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-green-700 transition duration-300 text-lg">
-                        <i class="fa fa-shopping-bag mr-3"></i> Beli Sekarang
-                    </a>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="{{ route('orders.create', ['product_id' => $product->id]) }}" class="inline-flex items-center bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-green-700 transition duration-300 text-lg">
+                            <i class="fa fa-shopping-bag mr-3"></i> Beli Sekarang
+                        </a>
+                        <form action="{{ route('cart.add') }}" method="POST" class="inline">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="inline-flex items-center bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 text-lg">
+                                <i class="fa fa-cart-plus mr-3"></i> Tambah ke Keranjang
+                            </button>
+                        </form>
+                    </div>
                 @else
                     <a href="{{ route('login') }}" class="inline-flex items-center bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 text-lg">
                         <i class="fa fa-user mr-3"></i> Login untuk Membeli

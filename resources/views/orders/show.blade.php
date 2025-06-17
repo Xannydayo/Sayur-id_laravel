@@ -135,6 +135,7 @@
                                                     @endif
                                                 @endfor
                                             </span>
+                                            
                                         </div>
                                         @if($userReview->comment)
                                             <div class="text-gray-700 dark:text-gray-300 mb-1">{{ $userReview->comment }}</div>
@@ -186,6 +187,13 @@
                     @method('DELETE')
                     <button type="submit" class="inline-flex items-center bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-red-700 transition duration-300">
                         <i class="fas fa-times-circle mr-2"></i> Batalkan Pesanan
+                    </button>
+                </form>
+            @elseif ($order->status === 'processing')
+                <form action="{{ route('orders.confirm', $order->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mengkonfirmasi pesanan ini telah selesai?');">
+                    @csrf
+                    <button type="submit" class="inline-flex items-center bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-green-700 transition duration-300">
+                        <i class="fas fa-check-circle mr-2"></i> Konfirmasi Pesanan Selesai
                     </button>
                 </form>
             @endif

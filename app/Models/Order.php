@@ -26,6 +26,10 @@ class Order extends Model
         'shipping_phone',
         'notes',
         'courier',
+        'subtotal',
+        'discount_amount',
+        'shipping_cost',
+        'coupon_code',
     ];
 
     public function getCourierPrice(): float

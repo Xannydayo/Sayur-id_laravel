@@ -54,63 +54,70 @@
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-900 font-sans antialiased">
-    <!-- Navbar start -->
-    <nav class="bg-white dark:bg-gray-800 shadow-md fixed w-full z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="{{ route('home') }}" class="flex items-center">
-                <h1 class="text-green-600 text-3xl font-extrabold">Sayur.id</h1>
-            </a>
+<!-- Navbar start -->
+<nav class="bg-white dark:bg-gray-800 shadow-md fixed w-full z-50">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <!-- Left section (Logo) -->
+        <a href="{{ route('home') }}" class="flex items-center mr-6">
+            <h1 class="text-green-600 text-3xl font-extrabold">Sayur.id</h1>
+        </a>
+
+        <!-- Search bar (centered and big on desktop) -->
+        <div class="flex-grow flex justify-center mx-6 hidden md:block">
+            <form action="{{ route('product') }}" method="GET" class="flex items-center w-full max-w-xl">
+                <input type="text" name="search" placeholder="Cari produk..."
+                    class="px-4 py-2 w-full rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    value="{{ request('search') }}">
+                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-r-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Right section (Main navigation links, User/Cart related links, Mobile menu button) -->
+        <div class="flex items-center space-x-6 ml-auto">
             <div class="hidden md:flex space-x-6 items-center">
                 <a href="{{ route('home') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Home</a>
                 <a href="{{ route('product') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Produk</a>
                 <a href="{{ route('contact') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">Kontak Kami</a>
-                <div>
-                    <form action="{{ route('product') }}" method="GET" class="flex items-center">
-                        <input type="text" name="search" placeholder="Cari produk..." 
-                            class="px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-                            value="{{ request('search') }}">
-                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-r-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
-                </div>
-                
-
-                @auth
-                    <a href="{{ route('orders.index') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium">
-                        <i class="fas fa-shopping-cart"></i> Keranjang
-                    </a>
-                    <div class="relative group">
-                        <button class="flex items-center text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium focus:outline-none">
-                            @if (Auth::user()->profile_photo_path)
-                                <img class="h-6 w-6 rounded-full object-cover mr-2" src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}" />
-                            @else
-                                <svg class="h-6 w-6 text-gray-300 dark:text-gray-700 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M24 20.993V24H0v-2.993C0 17.514 4.032 14 9 14h6c4.968 0 9 3.514 9 6.993zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6z" />
-                                </svg>
-                            @endif
-                            {{ Auth::user()->name }}
-                            <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                        <div class="absolute right-0 top-full w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg pt-1 pb-1 hidden group-hover:block pointer-events-auto z-50">
-                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Profile</a>
-                            <a href="{{ route('wishlist.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Wishlist</a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Logout</button>
-                            </form>
-                        </div>
-                    </div>
-                @else
-                    <div class="border-l border-gray-300 dark:border-gray-600 h-6 mx-2"></div>
-                    <div class="flex items-center space-x-4">
-                        <a href="{{ route('login') }}" class="text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 text-lg font-medium">Login</a>
-                        <a href="{{ route('register') }}" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-md text-base font-medium transition duration-300">Register</a>
-                    </div>
-                @endauth
             </div>
+            @auth
+                <a href="{{ route('cart') }}" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium hidden md:block">
+                    <i class="fas fa-shopping-cart"></i> Keranjang
+                </a>
+                <div class="relative group hidden md:block">
+                    <button class="flex items-center text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-lg font-medium focus:outline-none">
+                        @if (Auth::user()->profile_photo_path)
+                            <img class="h-6 w-6 rounded-full object-cover mr-2" src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}" />
+                        @else
+                            <svg class="h-6 w-6 text-gray-300 dark:text-gray-700 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 20.993V24H0v-2.993C0 17.514 4.032 14 9 14h6c4.968 0 9 3.514 9 6.993zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6z" />
+                            </svg>
+                        @endif
+                        {{ Auth::user()->name }}
+                        <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div class="absolute right-0 top-full w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg pt-1 pb-1 hidden group-hover:block pointer-events-auto z-50">
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Profile</a>
+                        <a href="{{ route('wishlist.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Wishlist</a>
+                        <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Pesanan Saya</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <div class="border-l border-gray-300 dark:border-gray-600 h-6 mx-2 hidden md:block"></div>
+                <div class="flex items-center space-x-4 hidden md:flex">
+                    <a href="{{ route('login') }}" class="text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 text-lg font-medium">Login</a>
+                    <a href="{{ route('register') }}" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-md text-base font-medium transition duration-300">Register</a>
+                </div>
+            @endauth
+
+            <!-- Mobile menu button -->
             <div class="md:hidden">
                 <button id="mobile-menu-button" class="text-gray-700 dark:text-gray-200 focus:outline-none">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -119,25 +126,39 @@
                 </button>
             </div>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="md:hidden hidden bg-white dark:bg-gray-800 py-2">
-            <a href="{{ route('home') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
-            <a href="{{ route('product') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Produk</a>
-            <a href="{{ route('contact') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Kontak Kami</a>
-            @auth
-                <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Keranjang</a>
-                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Logout</button>
-                </form>
-            @else
-                <a href="{{ route('login') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Login</a>
-                <a href="{{ route('register') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Register</a>
-            @endauth
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white dark:bg-gray-800 py-2">
+        <!-- Mobile Search Bar -->
+        <div class="px-4 py-2">
+            <form action="{{ route('product') }}" method="GET" class="flex items-center">
+                <input type="text" name="search" placeholder="Cari produk..."
+                    class="px-4 py-2 w-full rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    value="{{ request('search') }}">
+                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-r-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
-    </nav>
-    <!-- Navbar End -->
+        <a href="{{ route('home') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+        <a href="{{ route('product') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Produk</a>
+        <a href="{{ route('contact') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Kontak Kami</a>
+        @auth
+            <a href="{{ route('cart') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Keranjang</a>
+            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+            <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Pesanan Saya</a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Logout</button>
+            </form>
+        @else
+            <a href="{{ route('login') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Login</a>
+            <a href="{{ route('register') }}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Register</a>
+        @endauth
+    </div>
+</nav>
+<!-- Navbar End -->
 
     <!-- Main Content Area -->
     <main class="pt-20"> <!-- Adjust pt-x based on navbar height -->

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -17,7 +19,11 @@ class OrderController extends Controller
         if (!auth()->check()) {
             return redirect()->route('login');
         }
-        $orders = auth()->user()->orders()->latest()->get();
+        $user = auth()->user();
+        if (!$user instanceof User) {
+            return redirect()->route('login');
+        }
+        $orders = $user->orders()->latest()->get();
         return view('orders.index', compact('orders'));
     }
 
@@ -46,25 +52,46 @@ class OrderController extends Controller
                 'product_id' => 'required|exists:products,id',
                 'quantity' => 'required|numeric|min:1',
                 'courier' => 'nullable|string',
+                'coupon_code' => 'nullable|string',
             ]);
 
             $product = Product::findOrFail($validated['product_id']);
-            $total_amount = $product->harga * $validated['quantity'];
+            $subtotal = $product->harga * $validated['quantity'];
+            $shippingCost = 0;
+            $discountAmount = 0;
+            $coupon = null;
 
-            // Add courier price to total amount if a courier is selected
-            if (isset($validated['courier']) && array_key_exists($validated['courier'], Order::COURIER_PRICES)) {
-                $total_amount += Order::COURIER_PRICES[$validated['courier']];
+            // Calculate shipping cost
+            if (isset($validated['courier']) && array_key_exists($validated['courier'], \App\Models\Order::COURIER_PRICES)) {
+                $shippingCost = \App\Models\Order::COURIER_PRICES[$validated['courier']];
             }
 
-            $order = Order::create([
+            // Process coupon if exists
+            if ($request->coupon_code) {
+                $coupon = Coupon::where('code', $request->coupon_code)->first();
+                if ($coupon && $coupon->isValid($subtotal)) {
+                    $discountAmount = $coupon->calculateDiscount($subtotal);
+                } else {
+                    // If coupon is not valid, add error to session
+                    return redirect()->back()->withErrors(['coupon_code' => 'Kode kupon tidak valid atau tidak bisa digunakan untuk pesanan ini.'])->withInput();
+                }
+            }
+
+            $total_amount = $subtotal + $shippingCost - $discountAmount;
+
+            $order = \App\Models\Order::create([
                 'user_id' => auth()->id(),
-                'order_number' => 'ORD-' . Str::random(10),
+                'order_number' => 'ORD-' . \Illuminate\Support\Str::random(10),
                 'total_amount' => $total_amount,
                 'status' => 'pending',
                 'shipping_address' => $validated['shipping_address'],
                 'shipping_phone' => $validated['shipping_phone'],
                 'notes' => $validated['notes'],
                 'courier' => $validated['courier'] ?? null,
+                'subtotal' => $subtotal,
+                'discount_amount' => $discountAmount,
+                'shipping_cost' => $shippingCost,
+                'coupon_code' => $coupon ? $coupon->code : null,
             ]);
 
             // Attach product to order with quantity and price
@@ -73,8 +100,13 @@ class OrderController extends Controller
                 'price' => $product->harga
             ]);
 
+            // Increment used_count of coupon if applied successfully
+            if ($coupon && $discountAmount > 0) {
+                $coupon->increment('used_count');
+            }
+
             // Redirect to payment creation page after successful order creation
-            return redirect()->route('payments.create', $order)
+            return redirect()->route('payment', $order)
                 ->with('success', 'Pesanan berhasil dibuat. Silakan lanjutkan ke pembayaran.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Gagal membuat pesanan: ' . $e->getMessage()])->withInput();
@@ -123,5 +155,27 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index')
             ->with('success', 'Order cancelled successfully.');
+    }
+
+    /**
+     * Confirm order completion by user
+     */
+    public function confirm(Order $order)
+    {
+        // Check if the order belongs to the authenticated user
+        if ($order->user_id !== auth()->id()) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengkonfirmasi pesanan ini.');
+        }
+
+        // Check if the order is in processing status
+        if ($order->status !== 'processing') {
+            return redirect()->back()->with('error', 'Pesanan harus dalam status "processing" untuk dikonfirmasi.');
+        }
+
+        // Update order status to completed
+        $order->update(['status' => 'completed']);
+
+        return redirect()->route('orders.show', $order)
+            ->with('success', 'Pesanan berhasil dikonfirmasi selesai.');
     }
 }

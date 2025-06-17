@@ -101,7 +101,7 @@
                         </div>
 
                         <div class="flex items-center justify-end">
-                            <x-primary-button class="ml-4 px-8 py-3 bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800 text-white font-bold rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                            <x-primary-button type="submit" class="ml-4 px-8 py-3 bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800 text-white font-bold rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
                                 {{ __('Konfirmasi Pembayaran') }} <i class="fas fa-check-circle ml-2"></i>
                             </x-primary-button>
                         </div>
