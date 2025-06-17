@@ -13,6 +13,31 @@ class Product extends Model
 
     protected $guarded = ['id'];
 
+    protected $fillable = [
+        'nama',
+        'slug',
+        'harga',
+        'gambar',
+        'deskripsi_singkat',
+        'deskripsi_panjang',
+        'category_id',
+        'discount_percentage',
+        'is_on_sale'
+    ];
+
+    protected $casts = [
+        'is_on_sale' => 'boolean',
+        'discount_percentage' => 'decimal:2'
+    ];
+
+    public function getDiscountedPriceAttribute()
+    {
+        if ($this->is_on_sale && $this->discount_percentage > 0) {
+            return $this->harga - ($this->harga * ($this->discount_percentage / 100));
+        }
+        return $this->harga;
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');

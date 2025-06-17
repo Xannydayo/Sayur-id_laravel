@@ -34,7 +34,15 @@
             <div class="lg:w-1/2">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-4">{{ $product->nama }}</h2>
                 <p class="text-lg text-gray-600 dark:text-gray-300 mb-3">Kategori: <span class="font-semibold">{{ $product->category ? $product->category->judul : 'Tidak ada kategori' }}</span></p>
-                <p class="text-4xl font-bold text-green-700 dark:text-green-400 mb-6">Rp {{ number_format($product->harga, 0, ',', '.') }} / Kg</p>
+                @if($product->is_on_sale && $product->discount_percentage > 0)
+                    <div class="flex items-center gap-4 mb-6">
+                        <p class="text-gray-500 dark:text-gray-400 line-through text-2xl">Rp {{ number_format($product->harga, 0, ',', '.') }} / Kg</p>
+                        <p class="text-4xl font-bold text-green-700 dark:text-green-400">Rp {{ number_format($product->discounted_price, 0, ',', '.') }} / Kg</p>
+                        <span class="bg-red-500 text-white text-lg font-semibold px-3 py-1 rounded-full">-{{ $product->discount_percentage }}%</span>
+                    </div>
+                @else
+                    <p class="text-4xl font-bold text-green-700 dark:text-green-400 mb-6">Rp {{ number_format($product->harga, 0, ',', '.') }} / Kg</p>
+                @endif
                 <div class="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
                     {!! $product->deskripsi_singkat !!}
                 </div>

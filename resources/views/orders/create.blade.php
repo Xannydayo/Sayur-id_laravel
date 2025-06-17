@@ -19,7 +19,12 @@
                                 <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}" class="w-32 h-32 object-cover rounded-lg mr-0 md:mr-6 mb-4 md:mb-0 shadow-sm border border-gray-300">
                                 <div class="text-center md:text-left flex-grow">
                                     <h3 class="text-2xl font-extrabold text-gray-900 dark:text-gray-50 mb-2">Produk: {{ $product->nama }}</h3>
-                                    <p class="text-xl font-semibold text-green-700 dark:text-green-400">Harga: Rp {{ number_format($product->harga, 0, ',', '.') }} / kg</p>
+                                    @if($product->is_on_sale && $product->discount_percentage > 0)
+                                        <p class="text-xl font-semibold text-gray-500 dark:text-gray-400 line-through">Harga Asli: Rp {{ number_format($product->harga, 0, ',', '.') }} / kg</p>
+                                        <p class="text-xl font-bold text-green-700 dark:text-green-400">Harga Diskon: Rp {{ number_format($product->discounted_price, 0, ',', '.') }} / kg</p>
+                                    @else
+                                        <p class="text-xl font-semibold text-green-700 dark:text-green-400">Harga: Rp {{ number_format($product->harga, 0, ',', '.') }} / kg</p>
+                                    @endif
                                 </div>
                             </div>
                             <div>

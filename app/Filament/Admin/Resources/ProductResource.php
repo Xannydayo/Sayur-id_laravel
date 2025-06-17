@@ -43,6 +43,20 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('harga')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Toggle::make('is_on_sale')
+                    ->label('Sedang Diskon')
+                    ->default(false)
+                    ->live(),
+                Forms\Components\TextInput::make('discount_percentage')
+                    ->label('Persentase Diskon')
+                    ->numeric()
+                    ->minValue(0)
+                    ->maxValue(100)
+                    ->default(0)
+                    ->required()
+                    ->suffix('%')
+                    ->visible(fn (Forms\Get $get) => $get('is_on_sale'))
+                    ->dehydrated(fn (Forms\Get $get) => $get('is_on_sale')),
                 Forms\Components\FileUpload::make('gambar')
                     ->required()
                     ->columnSpanFull(),

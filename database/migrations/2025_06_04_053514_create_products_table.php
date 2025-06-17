@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('nama');
             $table->string('slug');
             $table->string('harga');
+            $table->decimal('discount_percentage', 5, 2)->default(0);
+            $table->boolean('is_on_sale')->default(false);
             $table->string('gambar');
             $table->string('deskripsi_singkat');
             $table->string('deskripsi_panjang');

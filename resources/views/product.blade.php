@@ -93,8 +93,16 @@
                             @endauth
                         </div>
                         <div class="p-5 flex flex-col items-center text-center">
-                            <h5 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2 truncate group-hover:text-green-600 transition-colors duration-300">{{ $product->nama }}</h5>
-                            <p class="text-green-700 dark:text-green-400 text-2xl font-bold mb-4">Rp {{ number_format($product->harga, 0, ',', '.') }} / kg</p>
+                            <h5 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">{{ $product->nama }}</h5>
+                            @if($product->is_on_sale && $product->discount_percentage > 0)
+                                <div class="flex items-center gap-2">
+                                    <p class="text-gray-500 dark:text-gray-400 line-through text-lg">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
+                                    <p class="text-green-700 dark:text-green-400 text-2xl font-bold">Rp {{ number_format($product->discounted_price, 0, ',', '.') }}</p>
+                                </div>
+                                <span class="bg-red-500 text-white text-sm font-semibold px-2 py-1 rounded-full mt-1">-{{ $product->discount_percentage }}%</span>
+                            @else
+                                <p class="text-green-700 dark:text-green-400 text-2xl font-bold mb-4">Rp {{ number_format($product->harga, 0, ',', '.') }} / kg</p>
+                            @endif
                             @if($product->total_reviews > 0)
                                 <div class="flex items-center mb-4">
                                     <div class="flex text-yellow-500 mr-2">

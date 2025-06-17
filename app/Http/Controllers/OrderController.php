@@ -56,7 +56,7 @@ class OrderController extends Controller
             ]);
 
             $product = Product::findOrFail($validated['product_id']);
-            $subtotal = $product->harga * $validated['quantity'];
+            $subtotal = $product->discounted_price * $validated['quantity'];
             $shippingCost = 0;
             $discountAmount = 0;
             $coupon = null;
@@ -97,7 +97,7 @@ class OrderController extends Controller
             // Attach product to order with quantity and price
             $order->products()->attach($product->id, [
                 'quantity' => $validated['quantity'],
-                'price' => $product->harga
+                'price' => $product->discounted_price
             ]);
 
             // Increment used_count of coupon if applied successfully
