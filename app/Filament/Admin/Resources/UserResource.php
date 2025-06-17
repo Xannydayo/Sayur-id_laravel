@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -43,6 +44,11 @@ class UserResource extends Resource
                 TextInput::make('phone')
                     ->tel()
                     ->maxLength(255),
+                TextInput::make('balance')
+                    ->label('Balance')
+                    ->numeric()
+                    ->prefix('Rp')
+                    ->disabled(),
                 Textarea::make('address')
                     ->maxLength(65535)
                     ->columnSpanFull(),
@@ -65,6 +71,9 @@ class UserResource extends Resource
                 TextColumn::make('phone')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('balance')
+                    ->money('IDR')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -80,6 +89,25 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Action::make('topUp')
+                    ->label('Top Up Balance')
+                    ->icon('heroicon-o-banknotes')
+                    ->form([
+                        TextInput::make('amount')
+                            ->label('Amount')
+                            ->numeric()
+                            ->required()
+                            ->minValue(10000)
+                            ->prefix('Rp'),
+                    ])
+                    ->action(function (User $record, array $data): void {
+                        $record->balance += $data['amount'];
+                        $record->save();
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('Top Up Balance')
+                    ->modalDescription('Are you sure you want to top up this user\'s balance?')
+                    ->modalSubmitActionLabel('Yes, top up')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

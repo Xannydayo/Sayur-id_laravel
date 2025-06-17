@@ -38,7 +38,10 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                            <div>
+                                <div>{{ Auth::user()->name }}</div>
+                                <div class="text-xs text-gray-500">Balance: Rp {{ number_format(Auth::user()->balance, 0, ',', '.') }}</div>
+                            </div>
 
                             <div class="ml-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -55,6 +58,10 @@
 
                         <x-dropdown-link :href="route('wishlist.index')">
                             {{ __('Wishlist') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('balance.show')">
+                            {{ __('My Balance') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->

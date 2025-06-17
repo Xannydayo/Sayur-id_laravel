@@ -6,12 +6,51 @@ use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
     public function index(Order $order)
     {
-        return view('payments.create', compact('order'));
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return view('payment.index', compact('order'));
+    }
+
+    public function process(Request $request, Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'payment_method' => 'required|in:balance,bank_transfer,credit_card',
+        ]);
+
+        if ($request->payment_method === 'balance') {
+            $user = Auth::user();
+            
+            if ($user->balance < $order->total_amount) {
+                return back()->with('error', 'Insufficient balance');
+            }
+
+            // Deduct balance
+            $user->balance -= $order->total_amount;
+            $user->save();
+
+            // Update order status
+            $order->payment_method = 'balance';
+            $order->payment_status = 'paid';
+            $order->status = 'processing';
+            $order->save();
+
+            return redirect()->route('orders.show', $order)->with('success', 'Payment successful using balance');
+        }
+
+        // Handle other payment methods
+        // ... existing code for other payment methods ...
     }
 
     public function store(Request $request)

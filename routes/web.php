@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductQuestionController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\BalanceController;
 
 // Route custom kamu
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -60,6 +61,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('/payment/{order}', [\App\Http\Controllers\PaymentController::class, 'index'])->name('payment');
+
+    // Balance routes
+    Route::get('/balance', [BalanceController::class, 'show'])->name('balance.show');
+    Route::post('/balance/topup', [BalanceController::class, 'topUp'])->name('balance.topup')->middleware('admin');
+    Route::post('/balance/use', [BalanceController::class, 'useBalance'])->name('balance.use');
+    
+    // Payment processing route
+    Route::post('/payment/process/{order}', [PaymentController::class, 'process'])->name('payment.process');
 });
 
 // Google Login Routes
