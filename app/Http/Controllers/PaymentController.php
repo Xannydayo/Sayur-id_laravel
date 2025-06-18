@@ -26,7 +26,7 @@ class PaymentController extends Controller
         }
 
         $request->validate([
-            'payment_method' => 'required|in:balance,bank_transfer,credit_card',
+            'payment_method' => 'required|in:balance,bank_transfer,e_wallet,cash,qris',
         ]);
 
         if ($request->payment_method === 'balance') {
@@ -47,10 +47,15 @@ class PaymentController extends Controller
             $order->save();
 
             return redirect()->route('orders.show', $order)->with('success', 'Payment successful using balance');
-        }
+        } else {
+            // Simulasi sukses untuk metode lain
+            $order->payment_method = $request->payment_method;
+            $order->payment_status = 'waiting';
+            $order->status = 'pending';
+            $order->save();
 
-        // Handle other payment methods
-        // ... existing code for other payment methods ...
+            return redirect()->route('orders.show', $order)->with('success', 'Metode pembayaran dipilih: ' . $request->payment_method . '. Silakan lanjutkan pembayaran sesuai instruksi.');
+        }
     }
 
     public function store(Request $request)
